@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3 Optimised Day Tours — June · Massa Lubrense</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: #f5f1eb; color: #2a2016; }
+
+  header {
+    background: linear-gradient(135deg, #0d3b5e 0%, #1a6b8a 55%, #0d5c45 100%);
+    color: white; padding: 44px 28px 32px; text-align: center;
+  }
+  header h1 { font-size: 2rem; margin-bottom: 8px; letter-spacing: .5px; }
+  header p { font-size: .95rem; opacity: .88; max-width: 580px; margin: 0 auto; line-height: 1.65; }
+  .header-meta {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .hbadge {
+    background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px; padding: 4px 14px; font-size: .77rem;
+    letter-spacing: .8px; text-transform: uppercase;
+  }
+  .hbadge.red { background: rgba(220,60,40,.35); border-color: rgba(255,120,100,.5); }
+
+  /* TABS */
+  .tabs {
+    display: flex; background: #0a2e47; overflow-x: auto;
+    border-bottom: 1px solid #0d3b5e;
+  }
+  .tab-btn {
+    flex: 1; min-width: 160px; background: none; border: none;
+    color: rgba(255,255,255,.6); font-family: Georgia, serif; font-size: .88rem;
+    padding: 14px 16px; cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all .2s; line-height: 1.35; text-align: center;
+  }
+  .tab-btn:hover { color: white; }
+  .tab-btn.active { color: #f5c842; border-bottom-color: #f5c842; }
+  .tab-btn small { display: block; font-size: .72rem; opacity: .75; margin-top: 2px; font-style: italic; }
+
+  /* PANELS */
+  .panel { display: none; max-width: 860px; margin: 0 auto; padding: 32px 20px 64px; }
+  .panel.active { display: block; }
+
+  /* LOGIC STRIP */
+  .logic-strip {
+    background: #1a3a52; color: white; border-radius: 12px;
+    padding: 18px 22px; margin-bottom: 24px; font-size: .86rem; line-height: 1.7;
+  }
+  .logic-strip h3 { font-size: .72rem; text-transform: uppercase; letter-spacing: 1.2px;
+    color: #f5c842; margin-bottom: 8px; font-family: Arial, sans-serif; }
+  .logic-strip ul { padding-left: 18px; }
+  .logic-strip li { margin-bottom: 4px; }
+
+  /* STATS */
+  .stats { display: flex; background: white; border-radius: 12px;
+    overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 28px; }
+  .stat { flex:1; text-align:center; padding:14px 8px; border-right:1px solid #eee; }
+  .stat:last-child { border-right: none; }
+  .stat .v { font-size: 1.2rem; font-weight: bold; color: #1a3a52; }
+  .stat .l { font-size: .68rem; color: #999; text-transform: uppercase;
+    letter-spacing: .5px; font-family: Arial, sans-serif; margin-top: 2px; }
+
+  /* TIMELINE */
+  .sec-label { font-size: .72rem; text-transform: uppercase; letter-spacing: 1.5px;
+    color: #8a7050; font-family: Arial, sans-serif; margin: 24px 0 12px; }
+
+  .tl { position: relative; padding-left: 36px; }
+  .tl::before { content:''; position:absolute; left:12px; top:8px; bottom:8px;
+    width: 2px; background: linear-gradient(to bottom, #1a6b8a, #0d5c45);
+    border-radius: 2px; }
+
+  .stop { position:relative; margin-bottom:18px; background:white;
+    border-radius:12px; padding:16px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07); transition: box-shadow .2s; }
+  .stop:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+  .stop::before { content:''; position:absolute; left:-28px; top:18px;
+    width:12px; height:12px; border-radius:50%; background:#1a6b8a;
+    border:2px solid white; box-shadow: 0 0 0 2px #1a6b8a; }
+
+  .stop.key::before { background:#c0392b; box-shadow:0 0 0 2px #c0392b; }
+  .stop.drive::before { background:#7f8c8d; box-shadow:0 0 0 2px #7f8c8d; }
+  .stop.eat::before { background:#d35400; box-shadow:0 0 0 2px #d35400; }
+  .stop.cool::before { background:#2471a3; box-shadow:0 0 0 2px #2471a3; }
+
+  .stop-head { display:flex; align-items:baseline; gap:12px; margin-bottom:6px; flex-wrap:wrap; }
+  .stop-time { font-size:.73rem; font-family:Arial,sans-serif; font-weight:bold;
+    letter-spacing:.4px; color:#1a6b8a; white-space:nowrap; }
+  .stop.key .stop-time { color:#c0392b; }
+  .stop.drive .stop-time { color:#7f8c8d; }
+  .stop.eat .stop-time { color:#d35400; }
+  .stop.cool .stop-time { color:#2471a3; }
+  .stop h4 { font-size:1rem; color:#0d3b5e; }
+  .stop p { font-size:.88rem; line-height:1.65; color:#3d3020; }
+
+  .tip { margin-top:10px; background:#fffbf0; border-left:3px solid #f5c842;
+    padding:8px 12px; font-size:.82rem; color:#5a4020; border-radius:0 6px 6px 0; }
+  .tip strong { color:#b8860b; }
+  .tip.red { background:#fff5f5; border-left-color:#e74c3c; }
+  .tip.red strong { color:#c0392b; }
+  .tip.blue { background:#eaf4fb; border-left-color:#2e86c1; }
+  .tip.blue strong { color:#1a5276; }
+
+  /* LEGEND */
+  .legend { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+  .leg-item { display:flex; align-items:center; gap:6px; font-size:.76rem;
+    font-family:Arial,sans-serif; color:#555; }
+  .leg-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
+
+  /* ROUTE VISUAL */
+  .route-bar {
+    background: white; border-radius: 12px; padding: 16px 20px;
+    margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  }
+  .route-bar h3 { font-size:.72rem; text-transform:uppercase; letter-spacing:1.2px;
+    color:#8a7050; font-family:Arial,sans-serif; margin-bottom:12px; }
+  .route-flow { display:flex; align-items:center; flex-wrap:wrap; gap:4px; font-size:.82rem; }
+  .rnode { background:#e8f4f8; border:1px solid #aed; border-radius:8px;
+    padding:5px 10px; color:#0d3b5e; font-weight:bold; white-space:nowrap; }
+  .rnode.start { background:#d5f5e3; border-color:#82e0aa; }
+  .rnode.key { background:#fdebd0; border-color:#f0a060; }
+  .rarrow { color:#999; font-size:.9rem; padding: 0 2px; }
+  .rdrive { font-size:.7rem; color:#999; font-family:Arial,sans-serif; white-space:nowrap; }
+
+  .box-warn { background:#fef9e7; border:1px solid #f39c12; border-radius:10px;
+    padding:15px 18px; margin-top:24px; font-size:.86rem; color:#5a4020; line-height:1.65; }
+  .box-warn strong { color:#d35400; }
+  .box-info { background:#eaf4fb; border:1px solid #85c1e9; border-radius:10px;
+    padding:15px 18px; margin-top:14px; font-size:.86rem; color:#1a3a52; line-height:1.65; }
+
+  footer { text-align:center; padding:24px; font-size:.76rem; color:#8a7050;
+    font-family:Arial,sans-serif; border-top:1px solid #ddd; margin-top:32px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-meta">
+    <span class="hbadge">📍 Massa Lubrense</span>
+    <span class="hbadge">👥 4 Adults 50+</span>
+    <span class="hbadge">🚗 Own Car</span>
+    <span class="hbadge red">☀️ June — Peak Season</span>
+  </div>
+  <h1>3 Day Tours — Logistics Optimised</h1>
+  <p>Revised for June crowds, heat, and road reality. Every route runs in the smartest direction, every stop is timed to beat the crowds. Early starts are the single biggest advantage you have in June.</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="show(0)">
+    Day 1<small>Amalfi Coast Drive<br>East → West strategy</small>
+  </button>
+  <button class="tab-btn" onclick="show(1)">
+    Day 2<small>Pompeii + Sorrento<br>Beat the heat & queues</small>
+  </button>
+  <button class="tab-btn" onclick="show(2)">
+    Day 3<small>Capri by Ferry<br>Early boat = different island</small>
+  </button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ DAY 1 ═══ -->
+<div class="panel active" id="p0">
+
+  <div class="logic-strip">
+    <h3>🧠 The Routing Logic for Day 1</h3>
+    <ul>
+      <li><strong>Go east first (Amalfi → Ravello), return west (Positano last).</strong> Most day-trippers arrive from Naples/Salerno in the east from 10am onward, flooding Amalfi and Positano. By driving east first at 7am, you hit Amalfi while it's still calm, then ride back west against the incoming traffic flow in the afternoon.</li>
+      <li><strong>Ravello at midday</strong> — the hilltop kills two birds: it's cooler (300m elevation), quieter, and it holds you off the clogged coastal road during the worst traffic hours (11am–2pm).</li>
+      <li><strong>Positano in late afternoon</strong> — the light is golden, the worst of the day-trip crowd has already left on their return buses/ferries, and the temperature has dropped. Also the most photogenic hour.</li>
+      <li><strong>Park once, stay parked.</strong> In June, circling for parking costs you 45 minutes and blood pressure. The plan below has you park only twice all day.</li>
+    </ul>
+  </div>
+
+  <div class="route-bar">
+    <h3>🗺️ Route Flow — West to East in the morning, East to West in the afternoon</h3>
+    <div class="route-flow">
+      <span class="rnode start">Massa Lubrense</span>
+      <span class="rarrow">→</span><span class="rdrive">SS145 ~25 min</span><span class="rarrow">→</span>
+      <span class="rnode key">Amalfi Town</span>
+      <span class="rarrow">↑</span><span class="rdrive">20 min uphill</span><span class="rarrow">↑</span>
+      <span class="rnode key">Ravello</span>
+      <span class="rarrow">↓→</span><span class="rdrive">back to coast</span><span class="rarrow">→</span>
+      <span class="rnode">Grotta Smeraldo</span>
+      <span class="rarrow">→</span>
+      <span class="rnode">Praiano</span>
+      <span class="rarrow">→</span>
+      <span class="rnode key">Positano</span>
+      <span class="rarrow">→</span><span class="rdrive">SS145 ~30 min</span><span class="rarrow">→</span>
+      <span class="rnode start">Massa Lubrense</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v">7:00 AM</div><div class="l">Depart</div></div>
+    <div class="stat"><div class="v">~60 km</div><div class="l">Total Drive</div></div>
+    <div class="stat"><div class="v">5 stops</div><div class="l">Sites</div></div>
+    <div class="stat"><div class="v">~28°C</div><div class="l">June Avg</div></div>
+  </div>
+
+  <div class="legend">
+    <span class="leg-item"><span class="leg-dot" style="background:#c0392b"></span> Key sight</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#7f8c8d"></span> Drive leg</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#2471a3"></span> Cool/shade stop</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#d35400"></span> Eat</span>
+  </div>
+
+  <div class="sec-label">Hour-by-hour plan</div>
+  <div class="tl">
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">7:00 AM</span><h4>Depart Massa Lubrense eastward on SS145</h4></div>
+      <p>Take SS145 east via Sant'Agata sui Due Golfi, then descend to the coast. At this hour the road is light. You'll reach Amalfi via the SS163 from the west — going in the "right" direction means you're not fighting oncoming tourist traffic.</p>
+      <div class="tip"><strong>⛽ Fuel up the night before</strong> — petrol stations on the Amalfi Coast are rare and inconveniently placed.</div>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">7:45–10:00 AM</span><h4>⛵ Amalfi Town — arrive before the crowds</h4></div>
+      <p>Park in the main harbour car park (Parcheggio Piazza Flavio Gioia) — at 7:45am you'll have no trouble. This is the only sensible parking for Amalfi. Pay and leave the car here for the morning. The Duomo di Sant'Andrea opens at 9am — arrive at the door and walk straight in. Before 9am, walk the empty backstreets, have a proper Neapolitan espresso, and buy pastries from a bar. The famous piazza in front of the cathedral is breathtaking when it's not a wall-to-wall crowd.</p>
+      <div class="tip red"><strong>🚨 June reality:</strong> By 10:30am Amalfi's piazza is packed with cruise-ship and day-trip groups. By 11am, the harbour road is gridlocked. You want to be done and parked in Ravello before that window.</div>
+    </div>
+
+    <div class="stop cool">
+      <div class="stop-head"><span class="stop-time">10:15 AM</span><h4>🏔️ Drive up to Ravello — escape the midday heat</h4></div>
+      <p>Leave the harbour car park and drive the narrow winding SP1 road up to Ravello — about 6km, 20 minutes. You rise 350m above sea level. Temperature drops 4–5°C instantly. Parking is at the entrance to the village (ZTL from the village gate). This is the smartest move of the day: you're in the coolest, least-crowded spot while the coast below swelters and jams.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">10:30 AM–1:00 PM</span><h4>🎵 Ravello — Villa Rufolo & Terrazza dell'Infinito</h4></div>
+      <p>Two unmissable stops. First, Villa Rufolo (buy tickets at the gate, €7pp) — the 10th-century Arab-Norman towers and terraced gardens with their jaw-dropping view. Then walk 10 minutes along Via Roma to Villa Cimbrone: the Terrazza dell'Infinito with its classical busts against the open sea horizon is one of Italy's great set-pieces. The walk between the two is through a quiet medieval village — take your time.</p>
+      <div class="tip blue"><strong>💡 Midday strategy:</strong> Stay in Ravello through the 11am–1pm peak heat and traffic. Have a long, relaxed lunch here before descending. The restaurants around Piazza Vescovado serve excellent food at fair prices compared to the coast.</div>
+    </div>
+
+    <div class="stop eat">
+      <div class="stop-head"><span class="stop-time">1:00–2:00 PM</span><h4>🍝 Lunch in Ravello</h4></div>
+      <p>Eat at altitude. Try Ristorante Salvatore (with a terrace and coastal panorama) or any trattoria on the main piazza. The paccheri al ragù di tonno (large pasta tubes with tuna ragu) is a regional classic. The worst of the coast's lunch gridlock happens 12–2pm — let it pass while you eat in peace uphill.</p>
+    </div>
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">2:00 PM</span><h4>Descend back to SS163 and head west</h4></div>
+      <p>Back down to Amalfi and onto the SS163 heading west. Traffic has peaked and is beginning to ease. The road westward toward Positano — this is now going with the (slightly thinning) flow of returning day-trippers.</p>
+    </div>
+
+    <div class="stop">
+      <div class="stop-head"><span class="stop-time">2:20–2:50 PM</span><h4>🟢 Grotta dello Smeraldo</h4></div>
+      <p>Stop en route, just west of Conca dei Marini. There is a small cliff-side car park directly at the cave entrance — in June arrive early or you'll wait. Take the lift or steps down to the water, and the short rowing boat trip inside the cave. The glowing emerald light is genuinely magical and the whole visit takes 30–40 minutes. Not much walking at all.</p>
+    </div>
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">3:00 PM</span><h4>Continue west through Praiano</h4></div>
+      <p>Drive slowly through Praiano — the road here hugs the cliff edge with film-set views. Pull over at any layby. The section just west of Praiano is where the road makes its most dramatic coastal traverse.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">3:30–6:00 PM</span><h4>🌸 Positano — the golden hour visit</h4></div>
+      <p>Park at Viale Pasitea upper car park (paid, but spaces available by mid-afternoon as the day-trippers leave). Walk downhill into town. By 3:30–4pm, the worst of the midday crowd is thinning and the light has turned that warm golden quality that makes Positano famous. Visit Santa Maria Assunta church, walk the lower streets, browse the shops. The beach is still lovely for a swim if anyone wants one. Allow time to walk back up — about 15 minutes and some steps.</p>
+      <div class="tip"><strong>☀️ Best light of the day:</strong> Positano faces southwest. Afternoon sun lights the coloured houses perfectly — the morning light is actually flat here. Another reason to save it for last.</div>
+    </div>
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">6:15 PM</span><h4>Return to Massa Lubrense via SS145</h4></div>
+      <p>Head north from Positano through Sorrento and then south on SS145. At 6pm the coastal road is still busy but moving. The return leg takes about 40–50 minutes. Consider dinner in Sant'Agata sui Due Golfi on the way — the village sits between the two gulfs at 390m elevation and has excellent restaurants (Don Alfonso 1890 is legendary; several good local alternatives).</p>
+    </div>
+
+  </div>
+
+  <div class="box-warn">
+    <strong>🚗 The SS163 in June:</strong> Expect average speeds of 20–30 km/h on the coastal road between 10am–5pm. This is normal. Do not try to "make up time" — the road is single-lane with no overtaking. Set Google Maps or Waze before you leave and let it route around any ZTL. Never enter a blue ZTL sign — cameras send fines home automatically.
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ DAY 2 ═══ -->
+<div class="panel" id="p1">
+
+  <div class="logic-strip">
+    <h3>🧠 The Routing Logic for Day 2</h3>
+    <ul>
+      <li><strong>Pompeii opens at 9am — be there at 9:00 sharp.</strong> In June the site fills rapidly. By 10:30am every tour group from Naples, Rome and every cruise ship within range is there. The first 90 minutes are a completely different experience to the 10am–2pm mob.</li>
+      <li><strong>Leave Pompeii by 1pm.</strong> The afternoon sun on those black basalt cobblestones is brutal — there is no shade and the ground radiates heat. The site is still full and unpleasant by 2pm. Get out while you feel good.</li>
+      <li><strong>Sorrento in the afternoon</strong> is perfect — the town has shade, cafes, sea breezes. It also has the best aperitivo scene on the peninsula. June evenings in Sorrento are magical.</li>
+      <li><strong>Route: drive north from Massa Lubrense, loop via the A3 motorway to Pompeii</strong> — far faster than the coastal road to Pompeii (saves 25 min vs SS145 route).</li>
+    </ul>
+  </div>
+
+  <div class="route-bar">
+    <h3>🗺️ Route Flow</h3>
+    <div class="route-flow">
+      <span class="rnode start">Massa Lubrense</span>
+      <span class="rarrow">→</span><span class="rdrive">SS145 N → A3 motorway ~35 min</span><span class="rarrow">→</span>
+      <span class="rnode key">Pompeii</span>
+      <span class="rarrow">→</span><span class="rdrive">SS18 → SS145 ~25 min</span><span class="rarrow">→</span>
+      <span class="rnode key">Sorrento</span>
+      <span class="rarrow">→</span><span class="rdrive">SS145 S ~20 min</span><span class="rarrow">→</span>
+      <span class="rnode start">Massa Lubrense</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v">7:30 AM</div><div class="l">Depart</div></div>
+    <div class="stat"><div class="v">~70 km</div><div class="l">Total Drive</div></div>
+    <div class="stat"><div class="v">2 cities</div><div class="l">Stops</div></div>
+    <div class="stat"><div class="v">Pre-book</div><div class="l">Pompeii Tickets</div></div>
+  </div>
+
+  <div class="sec-label">Hour-by-hour plan</div>
+  <div class="tl">
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">7:30 AM</span><h4>Depart via SS145 north toward Naples, pick up A3</h4></div>
+      <p>Drive north on SS145 to Sorrento, then continue north toward Naples on the SS18/A3 direction. Exit at Pompei Est. The motorway is by far the fastest option — the coastal road to Pompeii from Massa Lubrense would take over an hour. Motorway does it in 35 minutes.</p>
+      <div class="tip red"><strong>🎟️ Non-negotiable:</strong> Book Pompeii tickets online before you leave home at pompeiitickets.com (official site) or tickets.pompeiisites.org. In June, on-site queues start at 8:30am and can be 60–90 minutes long. Skip-the-line entry costs the same as walk-up. Print or download to phone.</div>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">8:45 AM</span><h4>Park at Pompeii</h4></div>
+      <p>Multiple car parks cluster around the Porta Marina entrance (main gate). The official Pompeii Parking on Via Plinio is reliable. Park, get your bearings, grab a coffee from the bar near the entrance while the gates open at 9am. Do not queue at the gate before 9am in June heat with no shade — wait in the cafe.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">9:00 AM–12:30 PM</span><h4>🌋 Pompeii — the essential circuit</h4></div>
+      <p>Enter Porta Marina. The western section holds everything that matters. Walk the <strong>Via dell'Abbondanza</strong> (main street) all the way, turn into the Forum area (temples, basilica, market — the civic heart of the city), visit the <strong>House of the Faun</strong> (stunning Alexander mosaic), the <strong>Suburban Baths</strong>, and the haunting plaster casts of victims in the Garden of the Fugitives. For four adults moving at a comfortable pace with stops and photos, this circuit takes 3–3.5 hours and covers the highlights without exhaustion.</p>
+      <div class="tip"><strong>👟 Equipment:</strong> Ancient basalt cobbles are uneven and hard on knees. Closed shoes with cushioned soles — not sandals, not heels. Minimum 1.5L water per person. Wide-brim hat essential. The site has almost zero shade.</div>
+      <div class="tip blue"><strong>💡 Beat the crowd technique:</strong> Walk briskly to the far end of Via dell'Abbondanza first (toward the amphitheatre end), then work back west. Most tour groups follow the opposite route from the Forum entrance. You'll have the less-visited eastern section to yourselves for the first 45 minutes.</div>
+    </div>
+
+    <div class="stop eat">
+      <div class="stop-head"><span class="stop-time">12:30–1:30 PM</span><h4>🍕 Exit Pompeii and lunch nearby</h4></div>
+      <p>Exit by 12:30pm — before the full midday heat. Restaurants immediately outside Porta Marina are tourist-trap quality. Drive 5 minutes toward Torre Annunziata (north on SS18) for more authentic options, or better still, drive directly toward Sorrento and stop at one of the excellent restaurants in the Castellammare di Stabia area along the coast. This stretch has good, local, non-touristy eating.</p>
+    </div>
+
+    <div class="stop cool">
+      <div class="stop-head"><span class="stop-time">2:00 PM</span><h4>Drive to Sorrento — park and stay</h4></div>
+      <p>Take the SS145 coastal road south and west along the bay to Sorrento (~25 min). Park in the multi-storey car park on Via degli Aranci or Piazza Lauro — both are a short walk from the pedestrian centre. Leave the car here for the rest of the afternoon. In June Sorrento afternoons are hot but the town has shade, sea breezes, and gelato on every corner.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">2:30–5:30 PM</span><h4>🍋 Sorrento — a proper unhurried afternoon</h4></div>
+      <p>This is your reward for the early Pompeii morning. Start at <strong>Piazza Tasso</strong> — the elegant main square ringed with cafe terraces, overlooking the cliffs. Walk <strong>Corso Italia</strong> for shopping (ceramics, limoncello, leather). Detour to the <strong>Vallone dei Mulini</strong> viewpoint — a medieval ruined mill in a natural gorge, glimpsed from street level (no entrance, just lean over the railing — extraordinary). Walk to <strong>Villa Comunale gardens</strong> for the classic view over the Bay of Naples with Vesuvius rising behind the water. End at a Limoncello producer for a free tasting — several dotted around the old town.</p>
+      <div class="tip"><strong>🎯 Must-see in Sorrento:</strong> The clifftop view at Villa Comunale at sunset is one of the defining moments of any trip to the Sorrentine Peninsula. Vesuvius, Naples, the bay — all golden. Plan to be there by 6pm in June (sunset is around 8:30pm but the light turns at 6:30).</div>
+    </div>
+
+    <div class="stop eat">
+      <div class="stop-head"><span class="stop-time">6:00–7:30 PM</span><h4>🍸 Aperitivo on Piazza Tasso</h4></div>
+      <p>The Italian aperitivo hour (6–8pm) is a serious institution. Pull up a table at one of the piazza bars, order a Campari Spritz or local white Falanghina wine, and watch Sorrento's evening passeggiata unfold. This is the best hour of the entire day — the heat has dropped, the light is lovely, and the piazza buzzes. Consider staying for dinner in Sorrento (excellent seafood restaurants on Via Marina Grande, 10 minutes walk down the cliff steps) before the easy 20-minute drive home.</p>
+    </div>
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">8:00 PM (or later)</span><h4>Return to Massa Lubrense</h4></div>
+      <p>SS145 south, 20 minutes. Traffic is minimal after 7:30pm. A beautiful, easy end to the day.</p>
+    </div>
+
+  </div>
+
+  <div class="box-warn">
+    <strong>☀️ June heat at Pompeii:</strong> The ground temperature inside the site can reach 40–45°C by midday. The black basalt streets absorb and radiate heat mercilessly. This is the single biggest physical challenge of the trip. An early start (9am sharp) and exit before 1pm solves this completely. Don't be tempted to linger "just a bit more" past noon — it deteriorates fast.
+  </div>
+  <div class="box-info">
+    <strong>Optional upgrade:</strong> If anyone in the group is deeply interested in archaeology, Herculaneum (Ercolano) is 20 minutes north of Pompeii — smaller, better-preserved, and far less crowded. It could replace or complement Pompeii for a different (more intimate) experience of Roman life.
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ DAY 3 ═══ -->
+<div class="panel" id="p2">
+
+  <div class="logic-strip">
+    <h3>🧠 The Routing Logic for Day 3</h3>
+    <ul>
+      <li><strong>The first ferry is everything.</strong> In June, Capri receives 10,000–15,000 day-trippers on a busy day. The first boats arrive from 8:30am. The Blue Grotto rowing-boat queue starts at 9am and by 10am can be 90 minutes long. Taking the 7:30 or 8:00am hydrofoil from Sorrento gets you to the Grotta before the queue forms.</li>
+      <li><strong>Avoid Saturdays and Italian holidays absolutely.</strong> On a Saturday in June, the ferry terminal queue in Sorrento is itself a 45-minute ordeal. A Tuesday or Wednesday is dramatically different.</li>
+      <li><strong>Car strategy: drive to Sorrento, park all day.</strong> The multi-storey on Via degli Aranci charges a flat daily rate. Much cheaper than the per-hour harbour lot. Walk to the port (8 minutes).</li>
+      <li><strong>Anacapri in the morning (coolest part of the island), Capri Town in the afternoon.</strong> Not the other way around — the Monte Solaro chairlift has zero shade and is unpleasant in peak midday heat.</li>
+    </ul>
+  </div>
+
+  <div class="route-bar">
+    <h3>🗺️ Route Flow</h3>
+    <div class="route-flow">
+      <span class="rnode start">Massa Lubrense</span>
+      <span class="rarrow">→</span><span class="rdrive">SS145 ~20 min</span><span class="rarrow">→</span>
+      <span class="rnode">Sorrento Port</span>
+      <span class="rarrow">→</span><span class="rdrive">⛴️ 20–25 min hydrofoil</span><span class="rarrow">→</span>
+      <span class="rnode key">Marina Grande Capri</span>
+      <span class="rarrow">→</span><span class="rdrive">boat ~20 min</span><span class="rarrow">→</span>
+      <span class="rnode key">Blue Grotto</span>
+      <span class="rarrow">→</span><span class="rdrive">bus ~15 min</span><span class="rarrow">→</span>
+      <span class="rnode key">Anacapri</span>
+      <span class="rarrow">→</span><span class="rdrive">bus ~10 min</span><span class="rarrow">→</span>
+      <span class="rnode key">Capri Town</span>
+      <span class="rarrow">→</span><span class="rdrive">⛴️ return</span><span class="rarrow">→</span>
+      <span class="rnode start">Massa Lubrense</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v">7:00 AM</div><div class="l">Depart</div></div>
+    <div class="stat"><div class="v">Car-free</div><div class="l">Island Day</div></div>
+    <div class="stat"><div class="v">Mon–Fri</div><div class="l">Best Days</div></div>
+    <div class="stat"><div class="v">Pre-book</div><div class="l">Ferry Tickets</div></div>
+  </div>
+
+  <div class="sec-label">Hour-by-hour plan</div>
+  <div class="tl">
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">7:00 AM</span><h4>Drive to Sorrento — park at Via degli Aranci</h4></div>
+      <p>20-minute drive north on SS145. Park in the Via degli Aranci multi-storey (daily flat rate, much better than harbour parking). Walk 8 minutes downhill to the port. Buy a coffee and cornetto at the bar near the ticket office while you wait for the boat.</p>
+      <div class="tip red"><strong>🎟️ Book ferry tickets the day before</strong> at alilauro.it, snav.it or at the port kiosk. In June the 7:30–8:30am boats sell out quickly — especially the fast hydrofoils (aliscafi). The fast crossing is 20–25 min vs 50 min for the slower ferry. Worth it.</div>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">8:00 AM ferry → 8:25 AM arrive Marina Grande</span><h4>⛴️ Cross to Capri — go straight to the Blue Grotto</h4></div>
+      <p>The moment you dock at Marina Grande, do NOT take the funicular up to Capri Town yet. Instead, go immediately to the boat ticket stand on the right of the harbour (look for "Grotta Azzurra" signs) and book seats on the next motorboat to the cave. At 8:30am the queue will be minimal. By 10am it can be 60–90 minutes. This is the most time-sensitive moment of the entire day.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">8:30–10:00 AM</span><h4>🟦 Blue Grotto — first boats, no queue</h4></div>
+      <p>The motorboat takes 15–20 minutes around the western cape of the island. You pay at the cave entrance (€18pp at time of writing: boat fare + grotto entry). You lie flat in a tiny rowing boat to pass through the low arch into the cave. Inside, refracted sunlight turns the entire water column an impossible electric blue — one of Italy's genuine natural wonders. The boatman sings. Allow 40–50 minutes for the whole round trip.</p>
+      <div class="tip red"><strong>⚠️ Critical caveat:</strong> The Blue Grotto closes if waves exceed ~30cm — which happens in June with afternoon sea breezes. It is more likely to be open in the early morning when the sea is calm. If it's closed (you'll see the sign at Marina Grande before spending money on the motorboat), go straight to Plan B: a boat tour around the island's Faraglioni rocks and sea arches, which is equally spectacular.</div>
+    </div>
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">10:00 AM</span><h4>Return to Marina Grande — bus to Anacapri</h4></div>
+      <p>The local SIPPIC buses connect Marina Grande to Anacapri directly (cheaper than taxis, frequent). The ride takes about 15 minutes of spectacular hairpin turns. Taxis are available but expensive and in June you may wait.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">10:20–12:30 PM</span><h4>🌿 Anacapri — Monte Solaro chairlift</h4></div>
+      <p>Anacapri is the quieter, higher village — less glitzy than Capri Town, more authentic. From the main piazza, the seggiovia (open single-person chairlift) ascends to Monte Solaro, the island's 589m summit, in 12 minutes. The views — Bay of Naples, Vesuvius, the Amalfi Coast behind you, the open Tyrrhenian ahead — are staggering. The summit has a small bar (coffee with a view is €4, worth every cent). Take the chairlift back down. Do this before midday while it's still bearable in the sun.</p>
+      <div class="tip"><strong>💡 Chairlift tip:</strong> It's an open, single-person chairlift — perfectly safe and comfortable for all ages. The descent is actually more beautiful than the ascent as you face outward over the sea. No fitness required at all.</div>
+    </div>
+
+    <div class="stop eat">
+      <div class="stop-head"><span class="stop-time">12:30–2:00 PM</span><h4>🍝 Lunch in Anacapri — cooler, cheaper, more authentic</h4></div>
+      <p>Eat in Anacapri, not Capri Town. The price difference is noticeable and the quality is the same or better. Trattoria Il Solitario on Via Giuseppe Orlandi is a local favourite (small, garden setting, book ahead or arrive early). Alternatively, Bar Funicolare near the chairlift has good snacks and shade. Stay off your feet during the 12:30–2pm heat peak.</p>
+    </div>
+
+    <div class="stop key">
+      <div class="stop-head"><span class="stop-time">2:30–6:00 PM</span><h4>🛍️ Capri Town — the Piazzetta & Augustus Gardens</h4></div>
+      <p>Bus from Anacapri to Capri Town (15 min) or take the funicular from Marina Grande up. The famous <strong>Piazzetta</strong> (officially Piazza Umberto I) is absurdly small for its fame — surrounded by four cafe terraces, the clock tower, and the world's most concentrated population of expensive sunglasses. Walk <strong>Via Camerelle</strong> (the luxury shopping street). Then take the 10-minute walk to the <strong>Giardini di Augusto</strong> — free entry, breathtaking view of the Faraglioni rocks rising from the sea below. End the afternoon back on the Piazzetta for an aperitivo — yes it costs €12 for a Spritz, and yes it is completely worth it for the theatre of it all.</p>
+    </div>
+
+    <div class="stop drive">
+      <div class="stop-head"><span class="stop-time">6:30–7:00 PM</span><h4>⛴️ Return ferry to Sorrento</h4></div>
+      <p>Last fast hydrofoils run until about 8:30–9pm in June (check current timetable on the day). The evening crossing is luminous — the Bay of Naples lit golden, Vesuvius silhouetted. Collect the car from Via degli Aranci and drive the 20 minutes home. Or stay in Sorrento for a late dinner and drive back after 9pm when the roads are quiet.</p>
+    </div>
+
+  </div>
+
+  <div class="box-warn">
+    <strong>📅 Day-of-week matters enormously on Capri in June:</strong> Tuesday, Wednesday, Thursday = manageable crowds. Friday = busier. Saturday = very crowded, avoid if possible. Sunday = can be overwhelming with Italian day-trippers from Naples. If you can choose your days freely, put Capri on a Wednesday.
+  </div>
+  <div class="box-info">
+    <strong>💰 Budget note for Capri:</strong> This is the most expensive day of the three. Ferry return ~€25pp, Blue Grotto boat + entry ~€18pp, chairlift return ~€12pp, lunch and drinks. Budget €100–120pp for the full day including food. Capri does not do budget — but it is genuinely, categorically one of the most beautiful places on earth.
+  </div>
+</div>
+
+<footer>
+  Revised for June 2025 conditions · Massa Lubrense base · 4 adults with car<br>
+  Sources: TravelItaly guides on Campania, Amalfi Coast & Capri
+</footer>
+
+<script>
+function show(i) {
+  document.querySelectorAll('.panel').forEach((p,j) => p.classList.toggle('active', j===i));
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', j===i));
+}
+</script>
+</body>
+</html>
