@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 — Naples Airport to Massa Lubrense</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --ink: #1a1612;
+    --terracotta: #c4623a;
+    --terracotta-light: #e8856a;
+    --gold: #b8902a;
+    --gold-light: #d4ad50;
+    --sage: #6b7c5e;
+    --sky: #4a7c9e;
+    --muted: #7a6e62;
+    --border: rgba(26,22,18,0.12);
+    --card-bg: rgba(255,255,255,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle paper texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: linear-gradient(160deg, #2b1f14 0%, #3d2b18 40%, #1e2d3a 100%);
+    color: var(--cream);
+    padding: 80px 40px 60px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(196,98,58,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(74,124,158,0.2) 0%, transparent 50%);
+  }
+
+  .hero-inner {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--terracotta-light);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--terracotta-light);
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(245,240,232,0.65);
+    margin-top: 16px;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .hero-badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(245,240,232,0.8);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .hero-badge .icon { font-size: 14px; }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: linear-gradient(90deg, var(--terracotta) 0%, #a84e2a 100%);
+    color: white;
+    padding: 14px 40px;
+    font-size: 13px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .alert-banner strong { font-weight: 500; }
+
+  /* MAIN CONTENT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 28px;
+    margin-top: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ROUTE SUMMARY */
+  .route-summary {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-top: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .route-summary::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,98,58,0.15) 0%, transparent 70%);
+  }
+
+  .route-summary h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: var(--cream);
+  }
+
+  .route-steps {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .route-node {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--cream);
+    white-space: nowrap;
+  }
+
+  .route-node.highlight {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  .route-arrow {
+    color: rgba(255,255,255,0.3);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .route-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--terracotta-light);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* STOP CARDS */
+  .stops-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
+  }
+
+  .stop-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: default;
+  }
+
+  .stop-card:hover {
+    box-shadow: 0 8px 32px rgba(26,22,18,0.1);
+    transform: translateY(-2px);
+  }
+
+  .stop-header {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .stop-number {
+    background: var(--ink);
+    color: var(--cream);
+    width: 56px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1;
+    padding: 20px 0;
+    position: relative;
+  }
+
+  .stop-number.terracotta { background: var(--terracotta); }
+  .stop-number.gold { background: var(--gold); }
+  .stop-number.sky { background: var(--sky); }
+  .stop-number.sage { background: var(--sage); }
+
+  .stop-type {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+
+  .stop-body {
+    flex: 1;
+    padding: 20px 24px;
+  }
+
+  .stop-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .stop-subtitle {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .stop-description {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #3a3028;
+    margin-bottom: 14px;
+  }
+
+  .stop-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    background: rgba(26,22,18,0.05);
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .meta-pill .pip {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    flex-shrink: 0;
+  }
+
+  .meta-pill .pip.gold { background: var(--gold); }
+  .meta-pill .pip.sky { background: var(--sky); }
+  .meta-pill .pip.sage { background: var(--sage); }
+
+  /* TIP BOXES */
+  .tip-box {
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-box.warning {
+    background: rgba(196,98,58,0.08);
+    border-left: 3px solid var(--terracotta);
+    color: #5a2c10;
+  }
+
+  .tip-box.info {
+    background: rgba(74,124,158,0.08);
+    border-left: 3px solid var(--sky);
+    color: #1a3040;
+  }
+
+  .tip-box.food {
+    background: rgba(184,144,42,0.08);
+    border-left: 3px solid var(--gold);
+    color: #3a2c06;
+  }
+
+  .tip-box.nature {
+    background: rgba(107,124,94,0.08);
+    border-left: 3px solid var(--sage);
+    color: #2a3020;
+  }
+
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* WHAT TO ORDER */
+  .order-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .order-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .order-item .dish {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+    color: var(--ink);
+  }
+
+  .order-item .dish-note {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* SHOPPING LIST */
+  .shopping-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #3a3028;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .shop-item::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* TIMELINE TABLE */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 16px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .timeline-table th {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .timeline-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+
+  .timeline-table tr:last-child td { border-bottom: none; }
+  .timeline-table tr:hover td { background: rgba(245,240,232,0.5); }
+
+  .timeline-table .time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--terracotta);
+    white-space: nowrap;
+  }
+
+  .timeline-table .duration {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* DRIVING TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .driving-tip {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .driving-tip .tip-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .driving-tip p {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 32px 40px;
+    text-align: center;
+  }
+
+  .footer-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .footer p {
+    font-size: 12px;
+    color: rgba(245,240,232,0.4);
+  }
+
+  /* CONNECTOR LINE between cards */
+  .connector {
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(var(--border), var(--border));
+    margin: 0 auto;
+    opacity: 0.4;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .hero { padding: 60px 24px 48px; }
+    .route-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .shopping-list { grid-template-columns: 1fr; }
+    .stop-title { font-size: 19px; }
+    .alert-banner { padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Campania & Amalfi Coast Road Trip</div>
+    <h1>Day 1 — <em>Arrival</em><br>Naples to Massa Lubrense</h1>
+    <p class="hero-subtitle">From the airport, through ancient ruins and a coastal lunch, all the way to your hotel on the Sorrentine Peninsula.</p>
+    <div class="hero-meta">
+      <div class="hero-badge"><span class="icon">🗓️</span> Late June</div>
+      <div class="hero-badge"><span class="icon">🚗</span> Drive Day — ~1.5 hrs total driving</div>
+      <div class="hero-badge"><span class="icon">🌡️</span> 30°C+ expected — plan for heat</div>
+      <div class="hero-badge"><span class="icon">📍</span> Hotel: Via delle Torre 7, Massa Lubrense</div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT -->
+<div class="alert-banner">
+  <span>⚠️</span>
+  <span><strong>Do NOT drive into central Naples.</strong> ZTL cameras, impossible parking, and peak-season chaos. Collect your rental car and head south immediately.</span>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- ROUTE OVERVIEW -->
+  <div class="section-label">Route Overview</div>
+  <div class="route-summary">
+    <h2>Your Day at a Glance</h2>
+    <div class="route-steps">
+      <div class="route-node highlight">✈ Naples Airport</div>
+      <span class="route-arrow">→</span>
+      <div class="route-node">🏛 Herculaneum</div>
+      <span class="route-arrow">→</span>
+      <div class="route-node">🌊 Scenic Stop</div>
+      <span class="route-arrow">→</span>
+      <div class="route-node">🍝 Lunch + Supermarket</div>
+      <span class="route-arrow">→</span>
+      <div class="route-node">🏔 Viewpoint</div>
+      <span class="route-arrow">→</span>
+      <div class="route-node highlight">🏨 Hotel</div>
+    </div>
+    <div class="route-stats">
+      <div class="stat">
+        <span class="stat-number">~4</span>
+        <span class="stat-label">Stops</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">90</span>
+        <span class="stat-label">Min driving</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">~8</span>
+        <span class="stat-label">Hours total</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STOPS -->
+  <div class="section-label">The Stops</div>
+  <div class="stops-grid">
+
+    <!-- STOP 0: AIRPORT -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <div class="stop-number">
+          <span>0</span>
+          <span class="stop-type">Start</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-subtitle">Naples International Airport · Capodichino</div>
+          <div class="stop-title">Pick Up Your Rental Car</div>
+          <p class="stop-description">Car rental desks are in the arrivals hall. Choose the smallest car available — roads on the Sorrentine Peninsula are extremely narrow. Once you have the car, load Waze or Google Maps and set it to <strong>avoid ZTL zones</strong> before you even leave the car park.</p>
+          <div class="stop-meta">
+            <span class="meta-pill"><span class="pip"></span>Pick up paperwork, inspect for existing damage</span>
+            <span class="meta-pill"><span class="pip sky"></span>Set navigation: avoid ZTL</span>
+          </div>
+          <div class="tip-box warning">
+            <span class="tip-icon">⚠️</span>
+            <span><strong>ZTL Zones:</strong> Limited Traffic Zones are enforced by cameras throughout Southern Italy. Fines arrive by post weeks later — often €80–150. In Waze, enable "Avoid toll roads" and check settings for ZTL avoidance.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <!-- STOP 1: HERCULANEUM -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <div class="stop-number terracotta">
+          <span>1</span>
+          <span class="stop-type">History</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-subtitle">Ercolano · ~20 min from airport</div>
+          <div class="stop-title">Herculaneum (Ercolano)</div>
+          <p class="stop-description">Pompeii's quieter, better-preserved sister city — and far less crowded in late June, which is a major advantage. Buried by the same Vesuvius eruption in 79 AD, Herculaneum was a wealthier seaside town, and the ash preserved wooden beams, furniture, food, and mosaics in extraordinary detail. A compact site — you can see the highlights in 1.5–2 hours without rushing.</p>
+          <div class="stop-meta">
+            <span class="meta-pill"><span class="pip"></span>1.5–2 hours visit</span>
+            <span class="meta-pill"><span class="pip sky"></span>Opens 9:00 AM</span>
+            <span class="meta-pill"><span class="pip sage"></span>Corso Resina, Ercolano</span>
+          </div>
+          <div class="tip-box warning">
+            <span class="tip-icon">☀️</span>
+            <span><strong>June heat is serious here.</strong> The site is completely open-air with almost no shade. Arrive as early as possible — aim for 9:00 opening. Bring a hat, sunscreen, and 1.5L water per person minimum. Save Pompeii for Day 2 when you have more time.</span>
+          </div>
+          <div class="tip-box info">
+            <span class="tip-icon">🏛️</span>
+            <span><strong>Don't miss:</strong> The carbonised wooden furniture in the Casa del Salone Nero, the mosaic of Neptune & Amphitrite, and the boat sheds on the ancient shoreline containing skeletal remains of those who fled the eruption.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <!-- STOP 2: SCENIC -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <div class="stop-number sky">
+          <span>2</span>
+          <span class="stop-type">Scenic</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-subtitle">Torre del Greco / Torre Annunziata · 10 min from Herculaneum</div>
+          <div class="stop-title">The Road Along Vesuvius</div>
+          <p class="stop-description">Continuing south on the SS145, the views between Torre del Greco and Castellammare di Stabia are some of the most dramatic in Italy — Vesuvius towering on your left, the turquoise Tyrrhenian Sea on your right, and ancient towns clinging to the slopes between them. Look for a layby (piazzola di sosta) and stop for a photo. The visual of the still-smouldering volcano hovering over a modern city never gets old.</p>
+          <div class="stop-meta">
+            <span class="meta-pill"><span class="pip sky"></span>10–15 min stop</span>
+            <span class="meta-pill"><span class="pip"></span>No entry fee — roadside view</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <!-- STOP 3: LUNCH -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <div class="stop-number gold">
+          <span>3</span>
+          <span class="stop-type">Lunch</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-subtitle">Castellammare di Stabia · 10 min south</div>
+          <div class="stop-title">Lunch + Supermarket Stop</div>
+          <p class="stop-description">Castellammare di Stabia is a genuine working-class Neapolitan seaside town — not a tourist trap. That means real prices, real food, and Italians actually eating there. Park near the lungomare (seafront promenade, Viale Europa) and find a trattoria for lunch. Afterward, the Conad or Eurospin supermarket on the main road is the perfect place to stock up before heading into the smaller villages of the peninsula.</p>
+          <div class="stop-meta">
+            <span class="meta-pill"><span class="pip gold"></span>~1 hour for lunch</span>
+            <span class="meta-pill"><span class="pip"></span>+20 min supermarket</span>
+            <span class="meta-pill"><span class="pip sky"></span>Viale Europa promenade</span>
+          </div>
+
+          <div class="tip-box food">
+            <span class="tip-icon">🍽️</span>
+            <span><strong>Recommended restaurants near the waterfront:</strong> Look for any <em>trattoria</em> or <em>ristorante</em> with locals eating inside. Ask for the <em>menù del giorno</em> (daily menu) — usually €12–15 for a full meal with wine.</span>
+          </div>
+
+          <p style="font-size:13px; font-weight:500; margin:16px 0 8px; color: var(--ink);">What to order:</p>
+          <div class="order-grid">
+            <div class="order-item">
+              <span class="dish">Spaghetti alle Vongole</span>
+              <span class="dish-note">Clams, garlic, white wine — a classic</span>
+            </div>
+            <div class="order-item">
+              <span class="dish">Pizza Margherita</span>
+              <span class="dish-note">Neapolitan-style, wood-fired</span>
+            </div>
+            <div class="order-item">
+              <span class="dish">Frittura di Paranza</span>
+              <span class="dish-note">Mixed fried small fish</span>
+            </div>
+            <div class="order-item">
+              <span class="dish">Acqua frizzante</span>
+              <span class="dish-note">Sparkling water — stay hydrated!</span>
+            </div>
+          </div>
+
+          <div class="tip-box info">
+            <span class="tip-icon">🛒</span>
+            <span><strong>At the supermarket (Conad / Eurospin / Carrefour):</strong> This is your best chance to stock up at reasonable prices before reaching the tourist peninsula.</span>
+          </div>
+
+          <p style="font-size:13px; font-weight:500; margin:12px 0 8px; color: var(--ink);">Essential shopping list:</p>
+          <div class="shopping-list">
+            <div class="shop-item">Still & sparkling water (2L+ per person)</div>
+            <div class="shop-item">Sunscreen (SPF50 minimum)</div>
+            <div class="shop-item">Snacks: fruit, nuts, crackers</div>
+            <div class="shop-item">Local wine, beer or Aperol</div>
+            <div class="shop-item">Fresh mozzarella & local cheese</div>
+            <div class="shop-item">Parma ham / salumi</div>
+            <div class="shop-item">Bread or focaccia</div>
+            <div class="shop-item">Limoncello (it's cheaper here!)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <!-- STOP 4: VIEWPOINT -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <div class="stop-number sage">
+          <span>4</span>
+          <span class="stop-type">Viewpoint</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-subtitle">Sorrentine Peninsula · ~40 min from Castellammare</div>
+          <div class="stop-title">Punta della Campanella Viewpoint</div>
+          <p class="stop-description">As you wind through the hills above Massa Lubrense on the SP9 road, you'll pass viewpoints offering jaw-dropping panoramas of the Tyrrhenian Sea and the island of Capri floating in the distance. Punta della Campanella is the southernmost tip of the peninsula — a rocky cape facing Capri just 5km away. You don't need to hike all the way down (leave that for another day), but any of the miradors along the ridge road are spectacular for a first sunset view of the area.</p>
+          <div class="stop-meta">
+            <span class="meta-pill"><span class="pip sage"></span>20–30 min stop</span>
+            <span class="meta-pill"><span class="pip sky"></span>Best in late afternoon light</span>
+            <span class="meta-pill"><span class="pip"></span>Free — roadside viewpoint</span>
+          </div>
+          <div class="tip-box nature">
+            <span class="tip-icon">📸</span>
+            <span><strong>Golden hour photo tip:</strong> The drive along the SP9 from Termini toward Massa Lubrense in late afternoon (around 6–7pm in June) offers extraordinary light over Capri and the bay — genuinely one of the most photographed views in Italy.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"></div>
+
+    <!-- HOTEL -->
+    <div class="stop-card">
+      <div class="stop-header">
+        <div class="stop-number">
+          <span>🏨</span>
+          <span class="stop-type">Hotel</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-subtitle">Via delle Torre 7, Massa Lubrense · 15 min from viewpoint</div>
+          <div class="stop-title">Arrival at Your Hotel</div>
+          <p class="stop-description">Massa Lubrense is a peaceful, genuine Sorrentine village — a world away from tourist-heavy Sorrento just a few kilometres away. The locals actually live here. After settling in, head out on foot to explore the village centro and find a restaurant for dinner. Via Nastro d'Oro and the piazza near the Duomo di Santa Maria delle Grazie have a handful of excellent local spots.</p>
+          <div class="stop-meta">
+            <span class="meta-pill"><span class="pip"></span>Aim to arrive by 6–7pm</span>
+            <span class="meta-pill"><span class="pip sky"></span>Dinner: walk the village</span>
+          </div>
+          <div class="tip-box warning">
+            <span class="tip-icon">🚗</span>
+            <span><strong>Park and stay parked.</strong> Once at the hotel, leave the car for the night. Do not move it — parking in Massa Lubrense is limited and the roads at night are very narrow. Walk or take a taxi for dinner.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stops-grid -->
+
+  <!-- TIMELINE -->
+  <div class="section-label">Suggested Timeline</div>
+  <table class="timeline-table">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Activity</th>
+        <th>Duration</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="time">9:00</td>
+        <td><strong>Land & collect rental car</strong></td>
+        <td class="duration">~45 min</td>
+        <td>Set up navigation — ZTL avoidance ON</td>
+      </tr>
+      <tr>
+        <td class="time">9:45</td>
+        <td><strong>Drive to Herculaneum</strong></td>
+        <td class="duration">~20 min</td>
+        <td>A3 motorway south, exit Ercolano</td>
+      </tr>
+      <tr>
+        <td class="time">10:00</td>
+        <td><strong>Visit Herculaneum</strong></td>
+        <td class="duration">1.5–2 hrs</td>
+        <td>Arrive early — before peak heat</td>
+      </tr>
+      <tr>
+        <td class="time">12:00</td>
+        <td><strong>Drive south along the coast</strong></td>
+        <td class="duration">~30 min</td>
+        <td>Scenic SS145 — photo stop near Torre del Greco</td>
+      </tr>
+      <tr>
+        <td class="time">12:30</td>
+        <td><strong>Lunch in Castellammare</strong></td>
+        <td class="duration">~1 hr</td>
+        <td>Trattoria near Viale Europa waterfront</td>
+      </tr>
+      <tr>
+        <td class="time">13:45</td>
+        <td><strong>Supermarket run</strong></td>
+        <td class="duration">~20 min</td>
+        <td>Conad or Eurospin — stock up for the whole trip</td>
+      </tr>
+      <tr>
+        <td class="time">14:15</td>
+        <td><strong>Drive to Sorrentine Peninsula</strong></td>
+        <td class="duration">~45 min</td>
+        <td>Allow more in peak July — roads narrow</td>
+      </tr>
+      <tr>
+        <td class="time">15:00</td>
+        <td><strong>Rest at hotel / freshen up</strong></td>
+        <td class="duration">~2 hrs</td>
+        <td>Best time to rest — hottest part of day</td>
+      </tr>
+      <tr>
+        <td class="time">17:30</td>
+        <td><strong>Viewpoint drive — Punta della Campanella</strong></td>
+        <td class="duration">~1 hr</td>
+        <td>Golden hour light on Capri — spectacular</td>
+      </tr>
+      <tr>
+        <td class="time">19:30</td>
+        <td><strong>Dinner in Massa Lubrense village</strong></td>
+        <td class="duration">~1.5 hrs</td>
+        <td>Walk from hotel — try local restaurants on the piazza</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DRIVING TIPS -->
+  <div class="section-label">Driving Tips for Day 1</div>
+  <div class="tips-grid">
+    <div class="driving-tip">
+      <div class="tip-title">🚦 ZTL Zones</div>
+      <p>Red circles with "ZTL" on signs mean No Entry for non-resident vehicles. Cameras are everywhere. Fines of €80–150 arrive by post. Always check Waze settings to avoid these areas.</p>
+    </div>
+    <div class="driving-tip">
+      <div class="tip-title">🅿️ Parking your rental</div>
+      <p>Rental cars are prime targets for break-ins throughout Campania. Never leave anything visible in the car — bags, cameras, even charging cables. Use hotel parking when possible.</p>
+    </div>
+    <div class="driving-tip">
+      <div class="tip-title">🛣️ Road widths on the peninsula</div>
+      <p>The SP9 and smaller roads near Massa Lubrense are very narrow — one lane shared in both directions. Pull into a passing space when meeting oncoming traffic. Do not rush. Locals will honk; ignore it.</p>
+    </div>
+    <div class="driving-tip">
+      <div class="tip-title">🌡️ Late June traffic</div>
+      <p>Expect x1.5 to x2 the navigation time estimate on coastal roads in late June — especially on weekends. The A3 motorway is reliable; everything else may crawl. Plan for it.</p>
+    </div>
+    <div class="driving-tip">
+      <div class="tip-title">🇮🇹 Local driving style</div>
+      <p>Southern Italian drivers are assertive. Overtaking, tailgating, and horn use are all normal. Stay calm, don't respond aggressively, and you'll be fine. Deep breaths.</p>
+    </div>
+    <div class="driving-tip">
+      <div class="tip-title">⛽ Fuel</div>
+      <p>Fill up in Castellammare di Stabia before entering the Sorrentine Peninsula — fuel stations become sparse and expensive further along. Always keep at least half a tank.</p>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-title">Buon viaggio — welcome to Campania.</div>
+  <p>Day 1 of your Campania & Amalfi Coast road trip &nbsp;·&nbsp; Late June edition</p>
+</div>
+
+</body>
+</html>
