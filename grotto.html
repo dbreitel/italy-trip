@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capri + Blue Grotto — Day Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ── TOKENS ───────────────────────────────────────────────── */
+  :root {
+    --navy:       #0D2B45;
+    --navy-mid:   #164369;
+    --grotto:     #0096D6;
+    --grotto-pale:#E0F3FB;
+    --terracotta: #D46B2A;
+    --terra-pale: #FDF0E6;
+    --sand:       #F2EDE3;
+    --parchment:  #FAF7F2;
+    --ink:        #1C2B3A;
+    --muted:      #5A6B7A;
+    --rule:       #D4CBBB;
+    --white:      #FFFFFF;
+    --warn-bg:    #FFF8EC;
+    --warn-border:#D46B2A;
+    --success-bg: #EAF7F0;
+    --success-border: #2DAA6A;
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+
+    --radius: 4px;
+    --shadow: 0 2px 12px rgba(13,43,69,.10);
+    --shadow-md: 0 4px 24px rgba(13,43,69,.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--parchment);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 55%, #1D5480 100%);
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--grotto), var(--terracotta), var(--grotto));
+  }
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--grotto);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.08;
+    margin-bottom: 14px;
+  }
+  .hero h1 span {
+    color: var(--grotto);
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,.68);
+    font-weight: 300;
+    margin-bottom: 32px;
+    max-width: 520px;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hero-tag {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,.82);
+    font-weight: 500;
+  }
+
+  /* ── LAYOUT SHELL ─────────────────────────────────────────── */
+  .page-body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── SECTION TITLES ───────────────────────────────────────── */
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--grotto);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .section-rule {
+    height: 2px;
+    background: linear-gradient(90deg, var(--grotto) 0%, transparent 80%);
+    margin-bottom: 28px;
+  }
+  .section {
+    margin-top: 56px;
+  }
+
+  /* ── TIMELINE ─────────────────────────────────────────────── */
+  .timeline-section {
+    background: var(--navy);
+    padding: 40px 48px;
+    margin-bottom: 0;
+  }
+  .timeline-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255,255,255,.55);
+    letter-spacing: .06em;
+    margin-bottom: 24px;
+  }
+  .timeline-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .timeline-svg-wrap {
+    min-width: 620px;
+  }
+
+  /* ── CARD ─────────────────────────────────────────────────── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 36px;
+    margin-top: 24px;
+  }
+  .card + .card { margin-top: 16px; }
+
+  /* ── INFO BOXES ───────────────────────────────────────────── */
+  .infobox {
+    border-left: 3px solid var(--grotto);
+    background: var(--grotto-pale);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .infobox strong { color: var(--navy); }
+  .warnbox {
+    border-left: 3px solid var(--terracotta);
+    background: var(--warn-bg);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .warnbox strong { color: var(--terracotta); }
+  .tipbox {
+    border-left: 3px solid var(--terracotta);
+    background: var(--terra-pale);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  /* ── TWO-STAGE TABLE ──────────────────────────────────────── */
+  .stage-grid {
+    display: grid;
+    grid-template-columns: 90px 1fr 1fr;
+    gap: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    margin-top: 20px;
+  }
+  .sg-head { background: var(--navy); color: var(--white); padding: 10px 14px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .sg-cell { padding: 14px 16px; font-size: 14px; border-top: 1px solid var(--rule); }
+  .sg-stage { background: var(--grotto); color: var(--white); font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; text-align: center; border-top: 1px solid rgba(255,255,255,.2); }
+  .sg-action { background: var(--sand); font-weight: 500; color: var(--navy); }
+  .sg-detail { background: var(--parchment); color: var(--muted); }
+
+  /* ── COMPANY CARDS ────────────────────────────────────────── */
+  .company-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .co-card {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  .co-header {
+    background: var(--navy);
+    padding: 18px 20px 14px;
+  }
+  .co-badge {
+    display: inline-block;
+    background: var(--grotto);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .co-badge.aggregator { background: var(--muted); }
+  .co-badge.recommended { background: var(--terracotta); }
+  .co-name {
+    font-family: var(--font-display);
+    font-size: 19px;
+    color: var(--white);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .co-role { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 3px; }
+  .co-body { padding: 18px 20px; }
+  .co-body p { font-size: 13.5px; color: var(--muted); margin-bottom: 12px; }
+  .co-body p:last-child { margin-bottom: 0; }
+
+  .fact-list { list-style: none; padding: 0; }
+  .fact-list li {
+    font-size: 13px;
+    color: var(--ink);
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid var(--sand);
+    line-height: 1.5;
+  }
+  .fact-list li:last-child { border-bottom: none; }
+  .fact-list li::before {
+    content: '›';
+    position: absolute;
+    left: 4px;
+    color: var(--grotto);
+    font-weight: 700;
+    font-size: 15px;
+    top: 5px;
+  }
+  .fact-list li strong { color: var(--navy); }
+
+  /* ── SCHEDULE TABLE ───────────────────────────────────────── */
+  .sched-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 16px;
+  }
+  .sched-table th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: .05em;
+  }
+  .sched-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .sched-table tr:nth-child(even) td { background: var(--sand); }
+  .sched-table tr:nth-child(odd) td  { background: var(--parchment); }
+  .sched-table .highlight td { background: var(--grotto-pale) !important; }
+  .sched-table .highlight td:first-child { font-weight: 700; color: var(--grotto); }
+
+  /* ── WINNING COMBO ────────────────────────────────────────── */
+  .combo-box {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-top: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .combo-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--grotto), var(--terracotta));
+  }
+  .combo-headline {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .combo-sub {
+    color: rgba(255,255,255,.6);
+    font-size: 13.5px;
+    margin-bottom: 28px;
+  }
+  .combo-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .combo-step {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .combo-step-time {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--grotto);
+    font-family: var(--font-display);
+    margin-bottom: 4px;
+  }
+  .combo-step-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .combo-step-detail {
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+    line-height: 1.45;
+  }
+
+  /* ── COST TABLE ───────────────────────────────────────────── */
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .cost-table th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 11px 16px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: .05em;
+    font-weight: 600;
+  }
+  .cost-table th:last-child,
+  .cost-table td:last-child { text-align: right; }
+  .cost-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cost-table tr:nth-child(even) td { background: var(--sand); }
+  .cost-table tr:nth-child(odd) td  { background: var(--parchment); }
+  .cost-table .total-row td {
+    background: var(--grotto-pale) !important;
+    font-weight: 700;
+    color: var(--navy);
+    border-top: 2px solid var(--grotto);
+    font-size: 15px;
+  }
+
+  /* ── CHECKLIST ────────────────────────────────────────────── */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  .checklist li {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: start;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-text strong { display: block; font-size: 14px; color: var(--navy); margin-bottom: 2px; }
+  .check-text span { font-size: 12.5px; color: var(--muted); }
+  .check-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .badge-urgent { background: #FFE5E5; color: #C0392B; }
+  .badge-high   { background: #FFE8C8; color: #B35A00; }
+  .badge-dayof  { background: var(--grotto-pale); color: var(--grotto); }
+
+  /* ── CONTACTS ─────────────────────────────────────────────── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .contact-card {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    background: var(--white);
+  }
+  .contact-card h4 {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .contact-card .c-role { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .contact-card a {
+    display: block;
+    font-size: 13px;
+    color: var(--grotto);
+    text-decoration: none;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .contact-card a:hover { text-decoration: underline; }
+  .contact-card .c-phone { font-size: 13px; color: var(--ink); font-weight: 500; }
+
+  /* ── FOOTER ───────────────────────────────────────────────── */
+  .page-footer {
+    background: var(--navy);
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,.4);
+    margin-top: 80px;
+  }
+  .page-footer span { color: var(--grotto); }
+
+  /* ── RESPONSIVE ───────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .hero { padding: 40px 24px 36px; }
+    .timeline-section { padding: 32px 24px; }
+    .card { padding: 24px 20px; }
+    .stage-grid { grid-template-columns: 70px 1fr; }
+    .sg-detail { display: none; }
+    .combo-box { padding: 28px 24px; }
+    .co-name { font-size: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ──────────────────────────────────────────────────────── -->
+<header class="hero">
+  <p class="hero-eyebrow">Campania Trip Planner · Day Guide</p>
+  <h1>Capri + <span>Blue Grotto</span></h1>
+  <p class="hero-sub">Ferry, boat tour & booking guide — sourced live from Laser Capri, Motoscafisti di Capri, and Capri.com</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Late June</span>
+    <span class="hero-tag">Massa Lubrense base</span>
+    <span class="hero-tag">4 adults</span>
+    <span class="hero-tag">Day trip by ferry</span>
+    <span class="hero-tag">No car on island</span>
+  </div>
+</header>
+
+<!-- ── DAY TIMELINE ───────────────────────────────────────────────── -->
+<div class="timeline-section">
+  <p class="timeline-title">Day at a glance</p>
+  <div class="timeline-wrap">
+    <div class="timeline-svg-wrap">
+      <svg viewBox="0 0 860 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <!-- background -->
+        <rect width="860" height="110" fill="none"/>
+
+        <!-- time axis total: 07:30 → 19:30 = 720 min, mapped to 820px (x=20..840) -->
+        <!-- scale: (time-450) / 720 * 820 + 20 -->
+        <!-- 07:30=0min, 08:00=30, 08:30=60, 09:00=90, 10:00=150, 11:30=240, 12:00=270, 15:15=465, 19:30=720 -->
+
+        <!-- BLOCKS -->
+        <!-- Drive: 07:30–08:00 (0–30min) x=20, w=34 -->
+        <rect x="20"  y="20" width="34"  height="44" rx="3" fill="#E07A2F" opacity=".9"/>
+        <!-- Ferry out: 08:00–08:30 (30–60min) x=54, w=34 -->
+        <rect x="54"  y="20" width="34"  height="44" rx="3" fill="#0096D6" opacity=".95"/>
+        <!-- Dock + board: 08:30–09:15 (60–105min) x=88, w=51 -->
+        <rect x="88"  y="20" width="51"  height="44" rx="3" fill="#2DAA6A" opacity=".85"/>
+        <!-- Boat tour+BG: 09:15–11:30 (105–240min) x=139, w=154 -->
+        <rect x="139" y="20" width="154" height="44" rx="3" fill="#0096D6" opacity=".85"/>
+        <!-- Explore/lunch: 11:30–15:00 (240–450min) x=293, w=239 -->
+        <rect x="293" y="20" width="239" height="44" rx="3" fill="#164369" opacity=".8"/>
+        <!-- Return ferry: 15:00–15:45 (450–495min) x=532, w=51 -->
+        <rect x="532" y="20" width="51"  height="44" rx="3" fill="#0096D6" opacity=".95"/>
+        <!-- Drive home: 15:45–16:10 (495–520min) x=583, w=28 -->
+        <rect x="583" y="20" width="28"  height="44" rx="3" fill="#E07A2F" opacity=".9"/>
+
+        <!-- LABELS -->
+        <text x="37"  y="45" fill="white" font-family="Inter,sans-serif" font-size="9"  text-anchor="middle" font-weight="600">Drive</text>
+        <text x="37"  y="56" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">~12 min</text>
+
+        <text x="71"  y="44" fill="white" font-family="Inter,sans-serif" font-size="9"  text-anchor="middle" font-weight="600">Ferry</text>
+        <text x="71"  y="55" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">Sorrento</text>
+        <text x="71"  y="63" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">→ Capri</text>
+
+        <text x="113" y="44" fill="white" font-family="Inter,sans-serif" font-size="9"  text-anchor="middle" font-weight="600">Dock&amp;</text>
+        <text x="113" y="55" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">Board</text>
+
+        <text x="216" y="39" fill="white" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" font-weight="700">Island Boat Tour</text>
+        <text x="216" y="52" fill="rgba(255,255,255,.8)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">+ Blue Grotto visit</text>
+        <text x="216" y="62" fill="rgba(255,255,255,.6)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">Motoscafisti di Capri</text>
+
+        <text x="412" y="42" fill="white" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" font-weight="700">Free time — Explore Capri</text>
+        <text x="412" y="55" fill="rgba(255,255,255,.65)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">Piazzetta · Anacapri · lunch · swim</text>
+
+        <text x="557" y="44" fill="white" font-family="Inter,sans-serif" font-size="9"  text-anchor="middle" font-weight="600">Return</text>
+        <text x="557" y="55" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8" text-anchor="middle">ferry</text>
+
+        <text x="597" y="44" fill="white" font-family="Inter,sans-serif" font-size="9"  text-anchor="middle" font-weight="600">Home</text>
+
+        <!-- TIME TICKS -->
+        <!-- 07:30 x=20 -->
+        <line x1="20"  y1="68" x2="20"  y2="76" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+        <text x="20"  y="87" fill="rgba(255,255,255,.45)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">07:30</text>
+        <!-- 08:00 x=54 -->
+        <line x1="54"  y1="68" x2="54"  y2="76" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+        <text x="54"  y="87" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">08:00</text>
+        <!-- 09:00 x=122 -->
+        <line x1="122" y1="68" x2="122" y2="76" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <text x="122" y="87" fill="rgba(255,255,255,.55)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">09:00</text>
+        <!-- 10:00 x=190 -->
+        <line x1="190" y1="68" x2="190" y2="76" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <text x="190" y="87" fill="rgba(255,255,255,.55)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">10:00</text>
+        <!-- 11:30 x=293 -->
+        <line x1="293" y1="68" x2="293" y2="76" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+        <text x="293" y="87" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">11:30</text>
+        <!-- 13:00 x=395 -->
+        <line x1="395" y1="68" x2="395" y2="76" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+        <text x="395" y="87" fill="rgba(255,255,255,.45)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">13:00</text>
+        <!-- 15:00 x=532 -->
+        <line x1="532" y1="68" x2="532" y2="76" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+        <text x="532" y="87" fill="rgba(255,255,255,.7)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">15:00</text>
+        <!-- 15:45 x=583 -->
+        <line x1="583" y1="68" x2="583" y2="76" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+        <text x="583" y="87" fill="rgba(255,255,255,.45)" font-family="Inter,sans-serif" font-size="8.5" text-anchor="middle">15:45</text>
+
+        <!-- LEGEND -->
+        <rect x="20"  y="96" width="10" height="8" rx="1" fill="#E07A2F"/>
+        <text x="34" y="104" fill="rgba(255,255,255,.5)" font-family="Inter,sans-serif" font-size="8">Drive</text>
+        <rect x="78" y="96" width="10" height="8" rx="1" fill="#0096D6"/>
+        <text x="92" y="104" fill="rgba(255,255,255,.5)" font-family="Inter,sans-serif" font-size="8">Ferry / Boat tour</text>
+        <rect x="180" y="96" width="10" height="8" rx="1" fill="#2DAA6A"/>
+        <text x="194" y="104" fill="rgba(255,255,255,.5)" font-family="Inter,sans-serif" font-size="8">Dock &amp; board</text>
+        <rect x="268" y="96" width="10" height="8" rx="1" fill="#164369"/>
+        <text x="282" y="104" fill="rgba(255,255,255,.5)" font-family="Inter,sans-serif" font-size="8">Free exploration</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ── PAGE BODY ──────────────────────────────────────────────────── -->
+<div class="page-body">
+
+  <!-- ── SECTION 1: ROUTE ──────────────────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Getting There</p>
+    <h2 class="section-title">Your Route: Sorrento → Capri</h2>
+    <div class="section-rule"></div>
+
+    <div class="card">
+      <p>Since you are based in <strong>Massa Lubrense</strong>, Sorrento (Marina Piccola) is your closest and most practical departure port — approximately <strong>12 minutes by car</strong>. This is the correct choice over Naples, which would require driving north against the entire day's logic.</p>
+
+      <div class="infobox" style="margin-top:20px;">
+        <strong>Departure port:</strong> All ferry operators depart from <strong>Marina Piccola, Sorrento</strong>. All arrive at <strong>Marina Grande, Capri</strong>. From Marina Grande, both Laser Capri (Pier 23) and Motoscafisti (Dock 0) are within a 2-minute walk of any ferry pier — no buses or transfers required.
+      </div>
+
+      <div class="warnbox">
+        <strong>🚗 Parking in Sorrento:</strong> Non-residents cannot bring vehicles to Capri during high season (April–October). Leave your car in Sorrento before boarding.<br><br>
+        <strong>Garage Marina Piccola</strong> — closest to the pier, ~€40/day. City-centre parking lots with shuttle service are cheaper and worth considering for a full-day trip.
+      </div>
+
+      <div class="tipbox">
+        <strong>💡 Pro tip:</strong> Sit on the <em>left side</em> of the boat from Sorrento. You'll see the cliffs of the Sorrento Peninsula, Bagni della Regina Giovanna, Massa Lubrense village, Punta Campanella, and the best approach view of Marina Grande on arrival.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: TWO-STAGE PLAN ─────────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Day Structure</p>
+    <h2 class="section-title">The Two-Stage Day Plan</h2>
+    <div class="section-rule"></div>
+
+    <div class="card">
+      <p>The correct structure for a Blue Grotto day from Massa Lubrense:</p>
+      <div class="stage-grid">
+        <div class="sg-head">Stage</div>
+        <div class="sg-head">Action</div>
+        <div class="sg-head">Detail</div>
+
+        <div class="sg-stage">1</div>
+        <div class="sg-cell sg-action">Ferry — Sorrento → Capri (Marina Grande)</div>
+        <div class="sg-cell sg-detail">Laser Capri motorboat, 08:00 departure. Arrive ~08:30, ahead of the cruise ship wave that hits by 10:00.</div>
+
+        <div class="sg-stage">2</div>
+        <div class="sg-cell sg-action">Boat tour — Marina Grande → Island + Blue Grotto</div>
+        <div class="sg-cell sg-detail">Motoscafisti di Capri, Dock 0. Target first tour of the day (~09:00–09:30) for shortest Blue Grotto queues.</div>
+
+        <div class="sg-stage">3</div>
+        <div class="sg-cell sg-action">Explore Capri on foot</div>
+        <div class="sg-cell sg-detail">Piazzetta, Anacapri, shopping, lunch. Return ferry at 15:15, 16:10, or 18:35 (Laser Capri) or any NLG/SNAV/Caremar sailing.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: COMPANY BREAKDOWN ──────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Operators</p>
+    <h2 class="section-title">Company Breakdown</h2>
+    <div class="section-rule"></div>
+
+    <div class="company-cards">
+
+      <!-- Laser Capri -->
+      <div class="co-card">
+        <div class="co-header">
+          <span class="co-badge recommended">Ferry + Island tours</span>
+          <div class="co-name">Laser Capri</div>
+          <div class="co-role">lasercapri.com</div>
+        </div>
+        <div class="co-body">
+          <p>Laser Capri uniquely covers <em>both</em> the ferry leg from Sorrento and the on-island boat tour. Motorboats rather than hydrofoils — slower, scenic, outdoor seating.</p>
+
+          <strong style="font-size:12px;color:#164369;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Ferry — Sorrento → Capri</strong>
+          <ul class="fact-list">
+            <li><strong>Departures:</strong> 08:00 · 11:20 · 12:35</li>
+            <li><strong>Returns (Capri→Sorrento):</strong> 15:15 · 16:10 · 18:35</li>
+            <li><strong>Duration:</strong> ~30 min  |  <strong>Price:</strong> from €24/person</li>
+            <li><strong>Ticket office (Sorrento):</strong> Porto di Sorrento, Via Luigi de Maio — next to Bar Ruccio or Box 6</li>
+          </ul>
+
+          <strong style="font-size:12px;color:#164369;display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.05em;">Island Tour with Blue Grotto stop (Pier 23)</strong>
+          <ul class="fact-list">
+            <li><strong>Departures:</strong> 09:30 · 10:00 · 10:30 · 11:15 · 11:45 · 12:15 · 13:00</li>
+            <li><strong>Duration:</strong> ~2 hours  |  <strong>Price:</strong> €24/person</li>
+            <li><strong>Sights:</strong> Tiberius' Leap, White Grotto, Villa Malaparte, Natural Arch, Faraglioni, Marina Piccola, Green Grotto, Punta Carena lighthouse</li>
+            <li><strong>Blue Grotto rowboat + entrance:</strong> €18 — paid separately on the spot</li>
+            <li>If queue exceeds 45 min, boat returns to port; ticket stays valid for next departure</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Motoscafisti -->
+      <div class="co-card">
+        <div class="co-header">
+          <span class="co-badge recommended">On-island tours · Gold standard</span>
+          <div class="co-name">Motoscafisti di Capri</div>
+          <div class="co-role">motoscafisticapri.com · Dock 0, Marina Grande</div>
+        </div>
+        <div class="co-body">
+          <p>No ferries from Sorrento. Their role is the on-island boat experience only — you arrive by ferry, then use Motoscafisti for the sea tour. Founded 1955, oldest operator on the island.</p>
+          <ul class="fact-list">
+            <li><strong>Location:</strong> Dock 0, Marina Grande — 2 min walk from any ferry pier</li>
+            <li>Non-stop departures throughout the day; no fixed timetable — walk up and board</li>
+            <li>Online booking skips the ticket queue (essential in late June)</li>
+            <li><strong>Fleet:</strong> 32-seat lance up to 150-seat vessels (Maestrale, Grecale)</li>
+            <li>All skippers are native Capri islanders; English-speaking</li>
+            <li>Only company on Capri authorised for ship-to-shore ferrying</li>
+            <li>Live Blue Grotto open/closed status on homepage — check morning of travel</li>
+            <li>Island tour including Blue Grotto stop: ~2 hours</li>
+            <li><strong>Blue Grotto rowboat + entrance (€18) paid separately</strong> — applies to every operator</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Capri.com -->
+      <div class="co-card">
+        <div class="co-header">
+          <span class="co-badge aggregator">Aggregator — not an operator</span>
+          <div class="co-name">Capri.com</div>
+          <div class="co-role">capri.com/en/ferry-schedule</div>
+        </div>
+        <div class="co-body">
+          <p>Not a boat company. A comprehensive information and booking platform showing live schedules from all main operators side-by-side. Use it to compare Sorrento departure times before you decide.</p>
+
+          <strong style="font-size:12px;color:#164369;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Current Sorrento → Capri options (2026)</strong>
+          <table class="sched-table">
+            <thead>
+              <tr>
+                <th>Operator</th>
+                <th>Type</th>
+                <th>Time</th>
+                <th>From</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="highlight">
+                <td>Laser Capri</td>
+                <td>Motorboat</td>
+                <td>~30 min</td>
+                <td>€24</td>
+              </tr>
+              <tr>
+                <td>Caremar</td>
+                <td>Fast ferry</td>
+                <td>30 min</td>
+                <td>€21.40</td>
+              </tr>
+              <tr>
+                <td>NLG</td>
+                <td>Hydrofoil</td>
+                <td>20 min</td>
+                <td>€25–27</td>
+              </tr>
+              <tr>
+                <td>SNAV / Gescab</td>
+                <td>Hydrofoil</td>
+                <td>20–30 min</td>
+                <td>€24–26</td>
+              </tr>
+              <tr>
+                <td>Alilauro Gescab</td>
+                <td>Hydrofoil</td>
+                <td>20 min</td>
+                <td>€24–26</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /company-cards -->
+  </section>
+
+  <!-- ── SECTION 4: WINNING COMBO ──────────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Recommendation</p>
+    <h2 class="section-title">The Winning Combination</h2>
+    <div class="section-rule"></div>
+
+    <div class="combo-box">
+      <div class="combo-headline">Laser Capri 08:00 ferry + Motoscafisti di Capri island tour</div>
+      <div class="combo-sub">For 4 adults in late June — scenic crossing in, professional on-island experience, earliest Blue Grotto access</div>
+
+      <div class="combo-steps">
+        <div class="combo-step">
+          <div class="combo-step-time">07:30</div>
+          <div class="combo-step-label">Drive to Sorrento</div>
+          <div class="combo-step-detail">~12 min from Massa Lubrense. Leave car at Garage Marina Piccola or a central lot with shuttle.</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-time">08:00</div>
+          <div class="combo-step-label">Laser Capri ferry departs</div>
+          <div class="combo-step-detail">Marina Piccola, Sorrento. Arrive at the port 30 min early. Sit left side for the best views.</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-time">08:30</div>
+          <div class="combo-step-label">Arrive Marina Grande</div>
+          <div class="combo-step-detail">Walk 2 minutes to Motoscafisti Dock 0. Ahead of cruise ship crowds by ~90 minutes.</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-time">09:00</div>
+          <div class="combo-step-label">Boat tour departs</div>
+          <div class="combo-step-detail">First Motoscafisti island tour. Blue Grotto before queues build. Tour completes ~11:00–11:30.</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-time">11:30+</div>
+          <div class="combo-step-label">Free afternoon</div>
+          <div class="combo-step-detail">Piazzetta, Monte Solaro, Anacapri, lunch. Return ferry 15:15, 16:10, or 18:35.</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:14px 18px;">
+        <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.6;">
+          <strong style="color:rgba(255,255,255,.85);">Why this combo?</strong> Laser Capri's 08:00 is the only early departure on that route. Motoscafisti has the most continuous departures, most experienced skippers, and the most professional setup on-island. The two companies are sister operations under the same Caprionline group — seamless transfer between legs.
+        </p>
+      </div>
+    </div>
+
+    <!-- Cost table -->
+    <h3 style="font-family:var(--font-display);font-size:18px;color:var(--navy);margin:36px 0 4px;">Cost Breakdown — 4 Adults</h3>
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Per Person</th>
+          <th>Total (4 people)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Laser Capri ferry — Sorrento → Capri (08:00)</td>
+          <td>€24</td>
+          <td>€96</td>
+        </tr>
+        <tr>
+          <td>Motoscafisti island tour (with Blue Grotto stop)</td>
+          <td>~€22–24</td>
+          <td>~€88–96</td>
+        </tr>
+        <tr>
+          <td>Blue Grotto rowboat + entrance (state operator)</td>
+          <td>€18</td>
+          <td>€72</td>
+        </tr>
+        <tr>
+          <td>Return ferry Capri → Sorrento (any operator)</td>
+          <td>~€21–27</td>
+          <td>~€84–108</td>
+        </tr>
+        <tr>
+          <td>Sorrento parking — Garage Marina Piccola (1 day)</td>
+          <td>—</td>
+          <td>~€40</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total (approximate)</td>
+          <td>~€87–93</td>
+          <td>~€380–412</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── SECTION 5: BLUE GROTTO ─────────────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Key Facts</p>
+    <h2 class="section-title">Blue Grotto — Facts & Late June Caveats</h2>
+    <div class="section-rule"></div>
+
+    <div class="card">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div>
+          <strong style="font-size:13px;color:var(--navy);display:block;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">The basics</strong>
+          <ul class="fact-list">
+            <li>Open daily <strong>09:00–17:00</strong>, weather and sea conditions permitting</li>
+            <li>Entry by small rowing boats only — no swimming during open hours</li>
+            <li>Each morning at 09:00, skippers evaluate whether it is safe to enter</li>
+            <li>Entrance is a 1-metre-high cavity — impossible in rough or high seas</li>
+            <li>Motoscafisti publishes live open/closed status on their homepage</li>
+          </ul>
+        </div>
+        <div>
+          <strong style="font-size:13px;color:var(--navy);display:block;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">Late June crowd reality</strong>
+          <ul class="fact-list">
+            <li>Cruise ships dock from ~09:30–10:00 onward — queues build fast</li>
+            <li><strong>Peak queue time: 10:30–13:00</strong></li>
+            <li>First boat tour (09:00–09:30) gives the best chance of short wait</li>
+            <li><strong>Weekdays significantly better than weekends</strong></li>
+            <li>If your wait exceeds 45 min, boat returns; ticket stays valid for next departure</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="warnbox" style="margin-top:20px;">
+        <strong>⚠ Important — The €18 entrance fee:</strong> The Blue Grotto entrance fee is a <em>state charge</em> paid directly at the cave on the day. It is <strong>not included</strong> in any boat company's ticket — regardless of how their marketing is worded. €18 per person applies to all visitors, always.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: BOOKING CHECKLIST ──────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Action Plan</p>
+    <h2 class="section-title">Booking Checklist</h2>
+    <div class="section-rule"></div>
+
+    <div class="card">
+      <p style="margin-bottom:4px;">Book in this order, as early as possible. Late June is high season and Laser Capri's motorboats have limited capacity.</p>
+      <ul class="checklist">
+        <li>
+          <div class="check-num">1</div>
+          <div class="check-text">
+            <strong>Laser Capri ferry — 4 × return tickets (Sorrento 08:00)</strong>
+            <span>lasercapri.com — book online with card. Ticket office also at Porto di Sorrento, Via Luigi de Maio (next to Bar Ruccio).</span>
+          </div>
+          <span class="check-badge badge-urgent">Urgent</span>
+        </li>
+        <li>
+          <div class="check-num">2</div>
+          <div class="check-text">
+            <strong>Motoscafisti island tour — book online to skip the queue</strong>
+            <span>motoscafisticapri.com — purchase online, show ticket at Dock 0 and board directly without queuing.</span>
+          </div>
+          <span class="check-badge badge-high">High</span>
+        </li>
+        <li>
+          <div class="check-num">3</div>
+          <div class="check-text">
+            <strong>Reserve Sorrento parking</strong>
+            <span>Garage Marina Piccola (closest, ~€40/day) or city-centre lot with shuttle service. Arrive 30 min before 08:00 departure.</span>
+          </div>
+          <span class="check-badge badge-high">High</span>
+        </li>
+        <li>
+          <div class="check-num">4</div>
+          <div class="check-text">
+            <strong>Check Blue Grotto status — morning of travel</strong>
+            <span>motoscafisticapri.com homepage shows live open/closed status. Also call Capri Tourist Office if sea conditions look uncertain: +39 081 377 6836.</span>
+          </div>
+          <span class="check-badge badge-dayof">Day-of</span>
+        </li>
+        <li>
+          <div class="check-num">5</div>
+          <div class="check-text">
+            <strong>Arrive at Sorrento ferry terminal 30 minutes before 08:00</strong>
+            <span>Porto di Sorrento, Marina Piccola. Take the pedestrian stairs down from Piazza Tasso (~10 min walk) or the Villa Comunale elevator (€1) if carrying bags.</span>
+          </div>
+          <span class="check-badge badge-dayof">Day-of</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── SECTION 7: CONTACTS ────────────────────────────────────── -->
+  <section class="section">
+    <p class="section-label">Quick Reference</p>
+    <h2 class="section-title">Contacts & Links</h2>
+    <div class="section-rule"></div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h4>Laser Capri</h4>
+        <p class="c-role">Ferry from Sorrento + Island boat tours</p>
+        <a href="https://www.lasercapri.com" target="_blank">lasercapri.com</a>
+        <a href="https://lasercapri.nefesy.com/btoc/b2c.php?LANG=EN" target="_blank">→ Book tickets online</a>
+        <p class="c-phone">Bookings: +39 081 213 2356</p>
+        <p class="c-phone">Ticket office: +39 081 837 5208</p>
+      </div>
+      <div class="contact-card">
+        <h4>Motoscafisti di Capri</h4>
+        <p class="c-role">On-island boat tours · Dock 0, Marina Grande</p>
+        <a href="https://www.motoscafisticapri.com" target="_blank">motoscafisticapri.com</a>
+        <a href="https://www.motoscafisticapri.com/en/service?code=S4S69" target="_blank">→ Book island tour</a>
+        <a href="https://www.motoscafisticapri.com/en/service?code=SRHKX" target="_blank">→ Book Blue Grotto trip</a>
+        <p class="c-phone">+39 081 8375646</p>
+      </div>
+      <div class="contact-card">
+        <h4>Capri.com</h4>
+        <p class="c-role">Ferry schedule aggregator — compare all operators</p>
+        <a href="https://www.capri.com/en/ferry-schedule" target="_blank">capri.com/en/ferry-schedule</a>
+        <a href="https://www.capri.com/en/t/sorrento/capri" target="_blank">→ Sorrento → Capri timetable</a>
+      </div>
+      <div class="contact-card">
+        <h4>Capri Tourist Office</h4>
+        <p class="c-role">Weather / sea conditions / cancellations</p>
+        <p class="c-phone">Piazza Umberto I, Capri</p>
+        <p class="c-phone">+39 081 377 6836</p>
+        <p class="c-phone" style="margin-top:6px;">Marina Grande port office:</p>
+        <p class="c-phone">+39 081 8370634</p>
+      </div>
+    </div>
+
+    <div class="infobox" style="margin-top:24px;">
+      <strong>Note:</strong> Laser Capri's ticket office in Sorrento is at Porto di Sorrento, Via Luigi de Maio — next to Bar Ruccio or at Box 6 of the main ticket offices. On Capri, both Laser Capri (Pier 23) and Motoscafisti (Dock 0) are within a 2-minute walk of each other at Marina Grande.
+    </div>
+  </section>
+
+</div><!-- /page-body -->
+
+<footer class="page-footer">
+  Prepared for your late-June Campania road trip &nbsp;·&nbsp; <span>Massa Lubrense base</span> &nbsp;·&nbsp; 4 adults &nbsp;·&nbsp; Sources: lasercapri.com · motoscafisticapri.com · capri.com
+</footer>
+
+</body>
+</html>
