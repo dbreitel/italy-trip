@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 — Naples Airport to Sorrento</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --ink:      #18130f;
+  --cream:    #f7f3ec;
+  --warm:     #faf7f2;
+  --terra:    #bf5b35;
+  --terra-lt: #d97a52;
+  --terra-pale: rgba(191,91,53,.10);
+  --gold:     #a8832a;
+  --gold-pale: rgba(168,131,42,.10);
+  --cobalt:   #2e6fa3;
+  --cobalt-pale: rgba(46,111,163,.10);
+  --sage:     #5e7a55;
+  --sage-pale: rgba(94,122,85,.10);
+  --muted:    #6b5f54;
+  --rule:     rgba(24,19,15,.10);
+  --card:     rgba(255,255,255,.75);
+  --shadow:   0 2px 20px rgba(24,19,15,.07);
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 72px 48px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 40%, rgba(191,91,53,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 15% 70%, rgba(46,111,163,.15) 0%, transparent 55%);
+}
+/* diagonal rule */
+.hero::after {
+  content:'';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 48px;
+  background: var(--cream);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+.hero-inner { position: relative; max-width: 880px; margin: 0 auto; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--terra-lt);
+  margin-bottom: 22px;
+}
+.hero-tag span { display:inline-block; width:28px; height:1px; background:var(--terra-lt); }
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 7vw, 76px);
+  font-weight: 400; line-height: 1.06; letter-spacing: -.02em;
+}
+.hero h1 em { font-style: italic; color: var(--terra-lt); }
+.hero-sub {
+  margin-top: 14px;
+  font-size: 14.5px; font-weight: 300; line-height: 1.65;
+  color: rgba(247,243,236,.6); max-width: 520px;
+}
+.hero-pills {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 28px;
+}
+.pill {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 5px;
+  padding: 7px 13px;
+  font-size: 12px; font-weight: 400;
+  color: rgba(247,243,236,.78);
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ── ALERT ── */
+.alert {
+  background: linear-gradient(90deg, var(--terra) 0%, #9e4220 100%);
+  color: #fff;
+  padding: 14px 40px;
+  font-size: 13px; line-height: 1.55;
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; text-align: center;
+}
+.alert strong { font-weight: 600; }
+
+/* ── BODY ── */
+.body-wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ── SECTION LABEL ── */
+.sec-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--terra);
+  margin: 52px 0 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.sec-label::after { content:''; flex:1; height:1px; background:var(--rule); }
+
+/* ── ROUTE CARD ── */
+.route-card {
+  background: var(--ink); color: var(--cream);
+  border-radius: 14px; padding: 32px 36px;
+  position: relative; overflow: hidden;
+}
+.route-card::before {
+  content:''; position: absolute;
+  top:-60px; right:-60px; width:220px; height:220px; border-radius:50%;
+  background: radial-gradient(circle, rgba(191,91,53,.18) 0%, transparent 70%);
+}
+.route-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 400; margin-bottom: 20px;
+}
+.route-nodes {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+}
+.node {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 5px; padding: 7px 13px;
+  font-size: 12px; font-weight: 400;
+  color: var(--cream); white-space: nowrap;
+}
+.node.hi { background: var(--terra); border-color: var(--terra); font-weight: 500; }
+.arr { color: rgba(255,255,255,.28); font-size: 13px; flex-shrink:0; }
+.stats {
+  display: grid; grid-template-columns: repeat(3,1fr); gap:16px;
+  margin-top: 26px; padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.stat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px; font-weight: 400; color: var(--terra-lt);
+  display: block; line-height:1;
+}
+.stat-l {
+  font-size: 10px; letter-spacing:.12em; text-transform:uppercase;
+  color: rgba(247,243,236,.45); margin-top: 3px; display:block;
+}
+
+/* ── STOP CARDS ── */
+.stops { display:flex; flex-direction:column; gap:3px; }
+.stop {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 11px; overflow:hidden;
+  transition: box-shadow .2s, transform .2s;
+}
+.stop:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.stop-row { display:flex; }
+
+.stop-num {
+  width: 60px; flex-shrink:0;
+  background: var(--ink); color: var(--cream);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding: 22px 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 30px; font-weight: 400; line-height:1;
+}
+.stop-num.c-terra  { background: var(--terra); }
+.stop-num.c-cobalt { background: var(--cobalt); }
+.stop-num.c-gold   { background: var(--gold); }
+.stop-num.c-sage   { background: var(--sage); }
+.stop-lbl {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8px; font-weight: 600; letter-spacing:.12em;
+  text-transform:uppercase; opacity:.65; margin-top:5px;
+}
+
+.stop-body { flex:1; padding: 22px 26px; }
+.stop-place {
+  font-size: 11px; font-weight: 500; letter-spacing:.1em;
+  text-transform:uppercase; color: var(--muted); margin-bottom: 5px;
+}
+.stop-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 23px; font-weight: 400; line-height:1.2; margin-bottom: 12px;
+}
+.stop-desc {
+  font-size: 13.5px; line-height: 1.68; color: #38302a; margin-bottom: 14px;
+}
+.stop-pills { display:flex; flex-wrap:wrap; gap:8px; }
+.s-pill {
+  font-size: 11.5px; font-weight: 400; color: var(--muted);
+  background: rgba(24,19,15,.05); border-radius: 20px;
+  padding: 4px 10px;
+  display: flex; align-items:center; gap:5px;
+}
+.dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.dt { background:var(--terra); }
+.dc { background:var(--cobalt); }
+.dg { background:var(--gold); }
+.ds { background:var(--sage); }
+
+/* ── TIP BOXES ── */
+.tip {
+  border-radius: 7px; padding: 13px 16px;
+  font-size: 13px; line-height: 1.6;
+  margin-top: 14px;
+  display:flex; gap:9px; align-items:flex-start;
+}
+.tip.warn  { background: var(--terra-pale);  border-left: 3px solid var(--terra);  color: #5a2310; }
+.tip.info  { background: var(--cobalt-pale); border-left: 3px solid var(--cobalt); color: #142840; }
+.tip.food  { background: var(--gold-pale);   border-left: 3px solid var(--gold);   color: #3a2c06; }
+.tip.nat   { background: var(--sage-pale);   border-left: 3px solid var(--sage);   color: #1e3019; }
+.tip-ico { font-size:15px; flex-shrink:0; margin-top:1px; }
+
+/* ── GRID ITEMS (food / shopping) ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+.grid-item {
+  background: #fff; border:1px solid var(--rule); border-radius:7px;
+  padding: 11px 14px; font-size: 13px;
+}
+.grid-item .di {
+  font-family:'Playfair Display',serif; font-size:15.5px;
+  font-weight:500; display:block; margin-bottom:2px;
+}
+.grid-item .dn { color:var(--muted); font-size:11.5px; }
+
+/* ── CONNECTOR ── */
+.conn {
+  width:2px; height:18px; background:var(--rule);
+  margin: 0 auto; opacity:.35;
+}
+
+/* ── SORRENTO HIGHLIGHT BOX ── */
+.highlight-box {
+  background: linear-gradient(135deg, #1e3a2e 0%, #112233 100%);
+  color: var(--cream); border-radius: 14px;
+  padding: 30px 34px; margin-top: 4px;
+  position: relative; overflow: hidden;
+}
+.highlight-box::before {
+  content:''; position:absolute;
+  bottom:-40px; right:-40px; width:160px; height:160px; border-radius:50%;
+  background: radial-gradient(circle, rgba(94,122,85,.25) 0%, transparent 70%);
+}
+.highlight-box h3 {
+  font-family:'Playfair Display',serif; font-size:20px;
+  font-weight:400; margin-bottom:14px;
+}
+.hl-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.hl-item {
+  background: rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:7px; padding:12px 14px;
+  font-size:13px; line-height:1.5;
+}
+.hl-item strong { display:block; font-weight:500; margin-bottom:2px; }
+.hl-item span { color:rgba(247,243,236,.55); font-size:12px; }
+
+/* ── TIMELINE TABLE ── */
+.tbl-wrap {
+  background: #fff; border-radius: 11px; overflow:hidden;
+  border: 1px solid var(--rule); margin-top: 4px;
+}
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead th {
+  background: var(--ink); color: var(--cream);
+  padding: 11px 16px; text-align:left;
+  font-size:9.5px; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+}
+tbody td {
+  padding: 12px 16px; border-bottom: 1px solid var(--rule);
+  vertical-align: middle; line-height: 1.45;
+}
+tbody tr:last-child td { border-bottom:none; }
+tbody tr:hover td { background:rgba(247,243,236,.5); }
+.t-time {
+  font-family:'Playfair Display',serif; font-size:18px;
+  color: var(--terra); white-space:nowrap;
+}
+.t-dur { font-size:11px; color:var(--muted); white-space:nowrap; }
+
+/* ── DRIVING TIPS GRID ── */
+.dtips { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
+.dtip {
+  background:var(--card); border:1px solid var(--rule);
+  border-radius:10px; padding:18px 20px;
+}
+.dtip-title {
+  font-size:13px; font-weight:600;
+  display:flex; align-items:center; gap:7px; margin-bottom:7px;
+}
+.dtip p { font-size:12.5px; line-height:1.65; color:var(--muted); }
+
+/* ── SORRENTO PARKING NOTE ── */
+.parking-note {
+  background: var(--cream);
+  border: 1.5px solid var(--terra);
+  border-radius: 10px; padding: 20px 24px;
+  margin-top: 14px;
+}
+.parking-note h4 {
+  font-size:13px; font-weight:600; margin-bottom:8px; color:var(--terra);
+  display:flex; align-items:center; gap:7px;
+}
+.parking-note p { font-size:13px; line-height:1.65; color: #3a2310; }
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--ink); color: var(--cream);
+  padding: 32px 40px; text-align:center;
+}
+.footer-title {
+  font-family:'Playfair Display',serif;
+  font-size:21px; font-weight:400; font-style:italic; margin-bottom:6px;
+}
+.footer p { font-size:12px; color:rgba(247,243,236,.35); }
+
+@media(max-width:600px){
+  .hero { padding:56px 22px 48px; }
+  .route-card { padding:24px 20px; }
+  .two-col { grid-template-columns:1fr; }
+  .dtips  { grid-template-columns:1fr; }
+  .hl-grid { grid-template-columns:1fr; }
+  .stats  { grid-template-columns:repeat(3,1fr); gap:10px; }
+  .alert  { padding:14px 20px; }
+  .stop-num { width:50px; font-size:24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-tag"><span></span>Campania Road Trip · Day 1<span></span></div>
+    <h1>Naples Airport<br>to <em>Sorrento</em></h1>
+    <p class="hero-sub">Collect the rental, stop at Herculaneum, lunch on the coast, a supermarket run — and arrive at Via Capo in time for the evening light over the Bay of Naples.</p>
+    <div class="hero-pills">
+      <div class="pill">🗓️ Late June</div>
+      <div class="pill">🚗 ~90 min total driving</div>
+      <div class="pill">🌡️ 30 °C+ — plan for heat</div>
+      <div class="pill">👥 4 adults</div>
+      <div class="pill">📍 Hotel: Via Capo 60, Sorrento</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ALERT ══════════════════════════════════════════════════════ -->
+<div class="alert">
+  <span>⚠️</span>
+  <span><strong>Do NOT drive into central Naples.</strong> ZTL cameras, impossible parking, and peak-season gridlock. Collect the car at Capodichino and head straight south on the A3.</span>
+</div>
+
+<!-- ══ BODY ════════════════════════════════════════════════════ -->
+<div class="body-wrap">
+
+  <!-- Route overview -->
+  <div class="sec-label">Route Overview</div>
+  <div class="route-card">
+    <h2>Your Day at a Glance</h2>
+    <div class="route-nodes">
+      <div class="node hi">✈ Naples Airport</div>
+      <span class="arr">→</span>
+      <div class="node">🏛 Herculaneum</div>
+      <span class="arr">→</span>
+      <div class="node">🌊 Coastal drive</div>
+      <span class="arr">→</span>
+      <div class="node">🍝 Lunch + Supermarket</div>
+      <span class="arr">→</span>
+      <div class="node">🌅 Clifftop arrival</div>
+      <span class="arr">→</span>
+      <div class="node hi">🏨 Via Capo, Sorrento</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="stat-n">4</span><span class="stat-l">Stops</span></div>
+      <div class="stat"><span class="stat-n">~90</span><span class="stat-l">Min driving</span></div>
+      <div class="stat"><span class="stat-n">~8h</span><span class="stat-l">Total day</span></div>
+    </div>
+  </div>
+
+  <!-- Stops -->
+  <div class="sec-label">The Stops</div>
+  <div class="stops">
+
+    <!-- 0 · Airport -->
+    <div class="stop">
+      <div class="stop-row">
+        <div class="stop-num">
+          <span>0</span>
+          <span class="stop-lbl">Start</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-place">Naples Capodichino International Airport</div>
+          <div class="stop-title">Collect the Rental Car</div>
+          <p class="stop-desc">Rental desks are in the arrivals hall ground floor. Request the smallest available car — roads on the Sorrento peninsula are very narrow. Before leaving the car park, set Waze or Google Maps to <strong>avoid ZTL zones</strong>, then take the A3 motorway south.</p>
+          <div class="stop-pills">
+            <div class="s-pill"><span class="dot dt"></span>Inspect the car for pre-existing damage before driving off</div>
+            <div class="s-pill"><span class="dot dc"></span>Enable ZTL avoidance in Waze settings</div>
+          </div>
+          <div class="tip warn">
+            <span class="tip-ico">⚠️</span>
+            <span><strong>ZTL Zones:</strong> Limited Traffic Zones are enforced by automatic cameras throughout Campania. You won't see the fine until it arrives in the post weeks later — typically €80–150 per infraction. In Waze: Settings → Navigation → Toll & HOV avoidance. Also manually check for ZTL signs (red circle, "ZTL" text) at every town entrance.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- 1 · Herculaneum -->
+    <div class="stop">
+      <div class="stop-row">
+        <div class="stop-num c-terra">
+          <span>1</span>
+          <span class="stop-lbl">History</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-place">Ercolano · ~20 min from the airport</div>
+          <div class="stop-title">Herculaneum — Pompeii's quieter twin</div>
+          <p class="stop-desc">Buried by the same Vesuvius eruption in 79 AD but far less visited — which in late June is a significant advantage. Herculaneum was a wealthy seaside resort town; the sudden pyroclastic surge (rather than slow ash fall) preserved wooden furniture, food, textiles and mosaics in extraordinary condition. The site is compact and can be covered thoroughly in 1.5–2 hours without feeling rushed. Save Pompeii for Day 2 when you have proper time.</p>
+          <div class="stop-pills">
+            <div class="s-pill"><span class="dot dt"></span>1.5–2 hours visit</div>
+            <div class="s-pill"><span class="dot dc"></span>Opens 9:00 AM (last entry 17:30)</div>
+            <div class="s-pill"><span class="dot ds"></span>Corso Resina, Ercolano — parking nearby</div>
+          </div>
+          <div class="tip warn">
+            <span class="tip-ico">☀️</span>
+            <span><strong>Late June heat warning:</strong> Herculaneum is entirely open-air with minimal shade. Aim for the 9:00 opening. Bring a sun hat, SPF 50+, and at least 1.5 L of water per person. The heat peaks between 12:00–15:00 — you want to be driving or indoors by then.</span>
+          </div>
+          <div class="tip info">
+            <span class="tip-ico">🏛️</span>
+            <span><strong>Don't miss:</strong> The Neptune &amp; Amphitrite mosaic in the Casa del Mosaico di Nettuno; the carbonised wooden cradle and furniture in Casa del Salone Nero; and the ancient boat sheds on the old shoreline, where skeletal remains of fleeing residents are still visible.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- 2 · Coastal drive -->
+    <div class="stop">
+      <div class="stop-row">
+        <div class="stop-num c-cobalt">
+          <span>2</span>
+          <span class="stop-lbl">Scenic</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-place">SS145 coastal road · 10 min south of Herculaneum</div>
+          <div class="stop-title">Driving Past Vesuvius — a Photo Stop</div>
+          <p class="stop-desc">Heading south on the SS145 between Torre del Greco and Castellammare di Stabia, you drive with Vesuvius on the left and the Bay of Naples on the right — one of the most visually dramatic stretches of road in Italy. Find a piazzola di sosta (a roadside layby) for a 10-minute photo stop. The sight of an active volcano hanging above a modern city never loses its impact.</p>
+          <div class="stop-pills">
+            <div class="s-pill"><span class="dot dt"></span>10–15 min</div>
+            <div class="s-pill"><span class="dot dc"></span>Free — roadside pull-off</div>
+            <div class="s-pill"><span class="dot ds"></span>Best views between Torre del Greco and Torre Annunziata</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- 3 · Lunch + Supermarket -->
+    <div class="stop">
+      <div class="stop-row">
+        <div class="stop-num c-gold">
+          <span>3</span>
+          <span class="stop-lbl">Lunch + Shop</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-place">Castellammare di Stabia · ~10 min further south</div>
+          <div class="stop-title">Lunch on the Seafront + Supermarket</div>
+          <p class="stop-desc">Castellammare di Stabia is a working Neapolitan coastal town — not a tourist destination. That means local prices, local food, and real atmosphere. Park near the waterfront promenade (Viale Europa) and find a trattoria for a proper sit-down lunch. Afterward, the Conad supermarket on the main road is your best opportunity to stock up for the week before entering the more expensive peninsula towns.</p>
+          <div class="stop-pills">
+            <div class="s-pill"><span class="dot dg"></span>~1 hour for lunch</div>
+            <div class="s-pill"><span class="dot dt"></span>+20 min supermarket</div>
+            <div class="s-pill"><span class="dot dc"></span>Viale Europa waterfront promenade</div>
+          </div>
+          <div class="tip food">
+            <span class="tip-ico">🍽️</span>
+            <span><strong>What to look for:</strong> Any trattoria with Italians eating inside and a handwritten <em>menù del giorno</em> on a blackboard. That's always the best sign. Budget €12–18 per person for a full primo, secondo and a carafe of house wine.</span>
+          </div>
+          <p style="font-size:13px; font-weight:600; margin:16px 0 6px; color:var(--ink)">Order at the table:</p>
+          <div class="two-col">
+            <div class="grid-item"><span class="di">Spaghetti alle Vongole</span><span class="dn">Clams, garlic, white wine — the local classic</span></div>
+            <div class="grid-item"><span class="di">Pizza Margherita</span><span class="dn">Neapolitan-style, wood-fired if possible</span></div>
+            <div class="grid-item"><span class="di">Frittura di Paranza</span><span class="dn">Mixed small fried fish — light and local</span></div>
+            <div class="grid-item"><span class="di">Acqua frizzante</span><span class="dn">Keep drinking water — it's 30°C out there</span></div>
+          </div>
+          <div class="tip info" style="margin-top:18px;">
+            <span class="tip-ico">🛒</span>
+            <span><strong>Supermarket:</strong> Look for Conad, Eurospin or Carrefour on the main SS145. Prices are significantly lower here than in Sorrento's small shops.</span>
+          </div>
+          <p style="font-size:13px; font-weight:600; margin:14px 0 6px; color:var(--ink)">Stock up for the week:</p>
+          <div class="two-col">
+            <div class="grid-item"><span class="dn">💧 Still &amp; sparkling water (2 L+ per person)</span></div>
+            <div class="grid-item"><span class="dn">🧴 Sunscreen SPF 50+ — more than you think</span></div>
+            <div class="grid-item"><span class="dn">🧀 Fresh mozzarella, burrata, local cheeses</span></div>
+            <div class="grid-item"><span class="dn">🍖 Prosciutto, salumi — for balcony picnics</span></div>
+            <div class="grid-item"><span class="dn">🍷 Falanghina or Greco di Tufo white wine</span></div>
+            <div class="grid-item"><span class="dn">🍋 Limoncello — much cheaper than in Sorrento</span></div>
+            <div class="grid-item"><span class="dn">🍞 Bread, taralli, crackers for snacking</span></div>
+            <div class="grid-item"><span class="dn">⛽ Fill up with fuel here too — cheaper</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conn"></div>
+
+    <!-- 4 · Arrival in Sorrento -->
+    <div class="stop">
+      <div class="stop-row">
+        <div class="stop-num c-sage">
+          <span>4</span>
+          <span class="stop-lbl">Arrival</span>
+        </div>
+        <div class="stop-body">
+          <div class="stop-place">Via Capo 60, Sorrento · ~40 min from Castellammare</div>
+          <div class="stop-title">Via Capo — Clifftop Sorrento</div>
+          <p class="stop-desc">Via Capo is the dramatic coastal road that runs west from Sorrento's historic centre along the clifftops toward Capo di Sorrento. Hotels here sit high above the sea with panoramic views across the Bay of Naples — this is where you catch those iconic shots of Vesuvius at sunset. The road is narrow but driveable; follow your navigation carefully into the hotel entrance. Once parked, leave the car and walk everywhere in Sorrento itself.</p>
+          <div class="stop-pills">
+            <div class="s-pill"><span class="dot ds"></span>Aim to arrive by 16:00–17:00</div>
+            <div class="s-pill"><span class="dot dt"></span>Narrow hotel access road — go slowly</div>
+            <div class="s-pill"><span class="dot dc"></span>~25 min walk to Piazza Tasso on foot</div>
+          </div>
+
+          <div class="parking-note">
+            <h4>🅿️ Critical: Parking at Via Capo</h4>
+            <p>Confirm with your hotel whether they have on-site parking before arrival — most Via Capo hotels have limited spaces, sometimes charged separately (~€15–20/night). <strong>Book your parking spot in advance if possible.</strong> Once at the hotel, do not move the car to explore Sorrento — walk down into town instead. Sorrento's centre has very limited non-resident parking and aggressive ZTL enforcement on several approach roads.</p>
+          </div>
+
+          <div class="tip warn">
+            <span class="tip-ico">⚠️</span>
+            <span><strong>ZTL into Sorrento centre:</strong> Do NOT attempt to drive to Piazza Tasso or Corso Italia. The ZTL zone covers most of the historic centre and is camera-enforced at all entry points. Walk down from Via Capo (~25 min) or take the local bus (SITA line from the Via Capo stop).</span>
+          </div>
+          <div class="tip nat">
+            <span class="tip-ico">🌅</span>
+            <span><strong>First evening:</strong> After settling in, walk down into Sorrento for dinner. Piazza Tasso is the lively main square — full of restaurants and bars. For something calmer and more local, head to the area around Via Luigi de Maio and the fishermen's port below. In late June the sun sets around 20:30 — the Via Capo clifftop view at golden hour over Vesuvius is unforgettable.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stops -->
+
+  <!-- Sorrento highlights -->
+  <div class="sec-label">Sorrento — Don't Miss on Your First Evening</div>
+  <div class="highlight-box">
+    <h3>A first walk through the city</h3>
+    <div class="hl-grid">
+      <div class="hl-item"><strong>Piazza Tasso</strong><span>The buzzing main square — cafes, restaurants, people-watching. The heartbeat of Sorrento.</span></div>
+      <div class="hl-item"><strong>Vallone dei Mulini</strong><span>An eerie ruined flour mill at the bottom of a limestone gorge, visible from street level near Piazza Tasso. Surreal and photogenic.</span></div>
+      <div class="hl-item"><strong>Corso Italia</strong><span>The main pedestrian shopping street — limoncello shops, ceramics, leather goods. Good for a late-evening stroll.</span></div>
+      <div class="hl-item"><strong>Marina Piccola view</strong><span>Walk down Via Luigi de Maio to the harbour — this is where you'll catch ferries to Capri. Worth scoping out in advance.</span></div>
+      <div class="hl-item"><strong>Via Capo clifftop at dusk</strong><span>Just outside your hotel door. Vesuvius across the bay, the sun setting behind the Phlegraean Fields. Take your time.</span></div>
+      <div class="hl-item"><strong>Basilica di Sant'Antonino</strong><span>The patron saint's beautiful baroque basilica — calm interior, away from the main tourist bustle.</span></div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="sec-label">Suggested Timeline</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Activity</th>
+          <th>Duration</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="t-time">9:00</td>
+          <td><strong>Land &amp; collect rental car</strong></td>
+          <td class="t-dur">~45 min</td>
+          <td>Enable ZTL avoidance · A3 south</td>
+        </tr>
+        <tr>
+          <td class="t-time">9:45</td>
+          <td><strong>Drive to Herculaneum</strong></td>
+          <td class="t-dur">~20 min</td>
+          <td>Exit A3 at Ercolano · follow signs to Scavi</td>
+        </tr>
+        <tr>
+          <td class="t-time">10:00</td>
+          <td><strong>Visit Herculaneum</strong></td>
+          <td class="t-dur">1.5–2 hrs</td>
+          <td>Early entry beats heat &amp; crowds</td>
+        </tr>
+        <tr>
+          <td class="t-time">12:00</td>
+          <td><strong>Coastal drive south</strong></td>
+          <td class="t-dur">~25 min</td>
+          <td>Photo stop by Vesuvius on SS145</td>
+        </tr>
+        <tr>
+          <td class="t-time">12:30</td>
+          <td><strong>Lunch — Castellammare di Stabia</strong></td>
+          <td class="t-dur">~1 hr</td>
+          <td>Trattoria near the Viale Europa promenade</td>
+        </tr>
+        <tr>
+          <td class="t-time">13:45</td>
+          <td><strong>Supermarket run</strong></td>
+          <td class="t-dur">~20 min</td>
+          <td>Conad / Eurospin — stock up for the week &amp; fuel up</td>
+        </tr>
+        <tr>
+          <td class="t-time">14:15</td>
+          <td><strong>Drive to Sorrento</strong></td>
+          <td class="t-dur">~40 min</td>
+          <td>Via Capo is signposted off the SS145 · go slowly near hotel</td>
+        </tr>
+        <tr>
+          <td class="t-time">15:00</td>
+          <td><strong>Check in · rest in the cool</strong></td>
+          <td class="t-dur">~2 hrs</td>
+          <td>Hottest part of the day — stay inside</td>
+        </tr>
+        <tr>
+          <td class="t-time">17:30</td>
+          <td><strong>Walk down to Sorrento centre</strong></td>
+          <td class="t-dur">~1 hr stroll</td>
+          <td>Vallone dei Mulini · Piazza Tasso · Corso Italia</td>
+        </tr>
+        <tr>
+          <td class="t-time">19:30</td>
+          <td><strong>Aperitivo + dinner</strong></td>
+          <td class="t-dur">~2 hrs</td>
+          <td>Aperol Spritz at Piazza Tasso · dinner nearby</td>
+        </tr>
+        <tr>
+          <td class="t-time">21:30</td>
+          <td><strong>Walk back up via Via Capo</strong></td>
+          <td class="t-dur">~25 min</td>
+          <td>Night views of Vesuvius lit up across the bay</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Driving tips -->
+  <div class="sec-label">Driving Notes — Day 1</div>
+  <div class="dtips">
+    <div class="dtip">
+      <div class="dtip-title">🚦 ZTL Zones</div>
+      <p>Red circle signs reading "ZTL" = camera-enforced no-entry for non-residents. Fines arrive by post 4–6 weeks later. Sorrento's centre has ZTL on Corso Italia, Via San Cesareo, and all approaches to Piazza Tasso. Always walk into the centre from Via Capo.</p>
+    </div>
+    <div class="dtip">
+      <div class="dtip-title">🅿️ Rental car security</div>
+      <p>Rental cars are targeted for break-ins throughout Campania. Never leave bags, chargers, passports or any visible items in the car — even in hotel car parks. Use the hotel safe for valuables overnight.</p>
+    </div>
+    <div class="dtip">
+      <div class="dtip-title">🛣️ Via Capo road width</div>
+      <p>Via Capo itself is two-lane but the side roads and hotel entrances branching off it can be very tight. Approach slowly. If meeting oncoming traffic in a narrow section, one car must reverse to a wider spot — be patient and let the other car through.</p>
+    </div>
+    <div class="dtip">
+      <div class="dtip-title">🌡️ Late June traffic</div>
+      <p>Multiply every Waze estimate by 1.5× on the coastal SS145 and any roads into Sorrento in late June. The A3 motorway is reliable. Budget extra time on the peninsula approach — weekend afternoons are especially congested.</p>
+    </div>
+    <div class="dtip">
+      <div class="dtip-title">⛽ Fuel strategy</div>
+      <p>Fill up at Castellammare di Stabia during the supermarket stop. Petrol stations in Sorrento and on the peninsula charge a premium and can be awkward to access in a rental car. Keep the tank at least half full at all times.</p>
+    </div>
+    <div class="dtip">
+      <div class="dtip-title">🇮🇹 Southern driving culture</div>
+      <p>Aggressive overtaking, close following, and frequent horn use are normal in Campania — especially in summer. Don't retaliate and don't let it rattle you. Locals are usually more irritable in peak tourist season. Deep breath, keep left when slower.</p>
+    </div>
+  </div>
+
+</div><!-- /body-wrap -->
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+<div class="footer">
+  <div class="footer-title">Vedi Napoli e poi muori — see Naples and die.</div>
+  <p>Day 1 · Campania &amp; Amalfi Coast Road Trip · Late June · 4 adults</p>
+</div>
+
+</body>
+</html>
